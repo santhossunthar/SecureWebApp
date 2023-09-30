@@ -3,5 +3,15 @@
  "http://java.sun.com/dtd/web-app_2_3.dtd" >
 
 <web-app>
-  <display-name>Archetype Created Web Application</display-name>
+  <display-name>Secure Web App</display-name>
+
+  <servlet>
+    <servlet-name>CallbackServlet</servlet-name>
+    <servlet-class>com.securewebapp.app.servlet.CallbackServlet</servlet-class>
+  </servlet>
+
+  <servlet-mapping>
+    <servlet-name>CallbackServlet</servlet-name>
+    <url-pattern>/callback</url-pattern>
+  </servlet-mapping>
 </web-app>
