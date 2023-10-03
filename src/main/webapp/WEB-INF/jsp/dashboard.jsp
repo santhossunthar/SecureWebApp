@@ -8,6 +8,6 @@
     <c:if test="${sessionScope.username != null}">
         <p>Welcome, ${sessionScope.username}!</p>
     </c:if>
-    <a href="logoutServlet">Logout</a>
+    <a href="/logout">Logout</a>
 </body>
 </html>

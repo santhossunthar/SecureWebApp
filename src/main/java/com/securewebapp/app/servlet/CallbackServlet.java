@@ -34,19 +34,16 @@ public class CallbackServlet extends HttpServlet {
 
             // Check if the JWT contains required claims and is not expired
             if (jwt.getClaims().containsKey("sub")) {
-                // If verification is successful, you can access the claims and other information
-                String userId = jwt.getClaim("userId").asString();
+                String userId = jwt.getClaim("sid").asString();
 
                 // Create a session and store user information
                 HttpSession session = request.getSession(true);
                 session.setAttribute("userId", userId);
-                response.sendRedirect("dashboard.jsp");
+                response.sendRedirect("/dashboard");
             } else {
-                // Handle authentication failure (e.g., JWT is missing claims or expired)
                 response.sendRedirect("index.jsp?error=AuthenticationFailed");
             }
         } catch (JWTVerificationException e) {
-            // Handle JWT verification error
             response.sendRedirect("index.jsp?error=AuthenticationError");
         }
     }
