@@ -1,12 +1,16 @@
 package com.securewebapp.app.servlet;
 
+import com.securewebapp.app.auth.AuthUser;
 import com.securewebapp.app.db.DBConnection;
+import com.securewebapp.app.helper.InputValidator;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 public class ReservationServlet extends HttpServlet {
     @Override
@@ -29,15 +33,47 @@ public class ReservationServlet extends HttpServlet {
         String reservationMileage = req.getParameter("mileage");
         String reservationMessage = req.getParameter("message");
 
+        if(reservationDate == null
+                || reservationTime == null
+                || reservationLocation == null
+                || reservationVehicleNo == null
+                || reservationMileage == null
+                || reservationMessage == null
+        ) {
+            req.setAttribute("response", "All Fields are mandatory!");
+            return;
+        }
+
+        InputValidator inputValidator = new InputValidator();
+        List<String> postValidatedData = new ArrayList<>();
+
+        if (inputValidator.isValidDate(reservationDate)
+                && inputValidator.isNumeric(reservationTime)
+                && inputValidator.isAlphanumeric(reservationLocation)
+                && inputValidator.isAlphanumeric(reservationVehicleNo)
+                && inputValidator.isNumeric(reservationMileage)
+                && inputValidator.isAlphanumeric(reservationMessage)
+        ) {
+            postValidatedData.add(reservationDate);
+            postValidatedData.add(reservationTime);
+            postValidatedData.add(reservationLocation);
+            postValidatedData.add(reservationVehicleNo);
+            postValidatedData.add(reservationMileage);
+            postValidatedData.add(reservationMessage);
+
+
+        } else {
+            req.setAttribute("response", "Error occurred!");
+        }
+
         DBConnection dbConnection = new DBConnection();
-        if(dbConnection.addReservationDetails(reservationData)){
+        if(dbConnection.addReservationDetails(postValidatedData)){
             req.setAttribute("response", "Added Successfully!");
         } else {
             req.setAttribute("response", "Error occurred!");
         }
 
-        req.getRequestDispatcher("/WEB-INF/jsp/reservation.jsp")
-                .forward(req, resp);
+        resp.sendRedirect("/WEB-INF/jsp/reservation.jsp");
     }
 
     @Override

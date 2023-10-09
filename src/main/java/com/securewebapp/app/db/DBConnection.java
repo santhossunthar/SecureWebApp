@@ -61,13 +61,20 @@ public class DBConnection {
         return null;
     }
 
-    public boolean addReservationDetails(String reservationData){
+    public boolean addReservationDetails(List<String> reservationData){
         try {
             Connection conn =  mySqlConn.connect();
             String sql = "INSERT INTO vehicle_service(" +
-                    "booking_id, date, time, location, vehicle_no, mileage, message, username) VALUES(? ? ? ? ? ? ? ?)";
+                    "date, time, location, vehicle_no, mileage, message, username) VALUES(? ? ? ? ? ? ?)";
             PreparedStatement preparedStatement = conn.prepareStatement(sql);
-            preparedStatement.setString(1, reservationData);
+            preparedStatement.setString(1, reservationData.get(0));
+            preparedStatement.setString(2, reservationData.get(1));
+            preparedStatement.setString(3, reservationData.get(2));
+            preparedStatement.setString(4, reservationData.get(3));
+            preparedStatement.setString(5, reservationData.get(4));
+            preparedStatement.setString(6, reservationData.get(5));
+            preparedStatement.setString(7, reservationData.get(6));
+
             int rowsInserted = preparedStatement.executeUpdate();
 
             boolean response;

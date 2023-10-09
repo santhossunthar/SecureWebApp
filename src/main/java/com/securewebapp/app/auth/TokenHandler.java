@@ -21,13 +21,13 @@ import java.util.Base64;
 import java.util.List;
 
 public class TokenHandler {
-    public String exchangeCodeForIdToken(String code){
+    public String[] exchangeCodeForIdToken(String code){
         HttpClient httpClient = HttpClients.custom()
                 .setDefaultRequestConfig(RequestConfig.custom()
                         .setCookieSpec(CookieSpecs.STANDARD)
                         .build())
                 .build();
-        String idToken = null;
+        String[] tokens = new String[2];
 
         try {
             // POST request to Okta's Token endpoint
@@ -60,9 +60,12 @@ public class TokenHandler {
 
             if (responseBody != null) {
                 JSONObject json = new JSONObject(responseBody);
-
                 if (json.has("id_token")) {
-                    idToken = json.getString("id_token");
+                    tokens[0] = json.getString("id_token");
+                }
+
+                if(json.has("access_token")){
+                    tokens[1] = json.getString("access_token");
                 }
             }
         } catch (IOException e) {
@@ -73,6 +76,6 @@ public class TokenHandler {
             httpClient.getConnectionManager().shutdown();
         }
 
-        return idToken;
+        return tokens;
     }
 }
