@@ -1,0 +1,313 @@
+:root {
+    --primary: #000;
+    --secondary: #fff;
+    --alert: #ddd;
+
+    --primary-hover: #eee;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+html {
+    font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+}
+
+body {
+    background-color: #fff;
+    color: var(--primary);
+    overflow: hidden;
+}
+
+nav {
+    background-color: var(--primary);
+    color: var(--secondary);
+}
+
+nav > .container {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+}
+
+nav > .container > .brand-logo {
+    color: var(--secondary);
+}
+
+.nav-items {
+    height: 3.5rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.nav-items > #profile-icon {
+    position: absolute;
+    background-color: red;
+    z-index: 999;
+}
+
+.nav-items > #profile-icon > img {
+    position:relative;
+    z-index: 99;
+    border-radius: 50%;
+    transition: 0.7s;
+}
+
+.nav-items > #profile-icon > img:hover {
+    background-color: var(--primary-hover);
+}
+
+#nav-items-list {
+    display: none;
+    position: absolute;
+    width: 8rem;
+    left: 70%;
+}
+
+#nav-items-list > ul {
+    list-style-type: none;
+    padding: .5rem;
+}
+
+#nav-items-list > ul > li {
+    padding: .8rem;
+    background-color: gray;
+}
+
+#nav-items-list > h2 {
+    position: relative;
+}
+
+#content > .container {
+    width: 100%;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    padding: 3rem;
+}
+
+#content > .container > .login-form {
+    background-color: aliceblue;
+    width: 60%;
+    height: 80%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding: 3rem;
+}
+
+.login-form > .header {
+    font-size: 24pt;
+    padding: 2rem;
+    display: flex;
+    justify-content: center;
+}
+
+.login-form > .body {
+    display: flex;
+    justify-content: center;
+    padding: 2rem;
+}
+
+.login-form > .body > button {
+    padding: 1rem 3rem;
+    border: none;
+    background-color: var(--primary);
+    color: var(--secondary);
+    transition: 0.7s;
+}
+
+.login-form > .body > button:hover {
+    background-color: var(--alert);
+    color: var(--secondary);
+}
+
+#user-profile > .container {
+    width: 100%;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    padding: 3rem;
+}
+
+#user-profile > .container > .profile-info {
+    background-color: aliceblue;
+    width: 80%;
+    height: 80%;
+    display: flex;
+    flex-direction: column;
+    padding: 3rem;
+}
+
+.profile-info > .header {
+    display: flex;
+    gap: 4rem;
+}
+
+#user-reservation > .container {
+    width: 100%;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    padding: 3rem;
+}
+
+#user-reservation > .container > .service-form {
+    background-color: aliceblue;
+    width: 60%;
+    height: 80%;
+    display: flex;
+    flex-direction: column;
+    padding: 3rem;
+}
+
+.service-form > form {
+    display: grid;
+    grid-template-columns: 0.5fr auto;
+    gap: 1.2rem;
+}
+
+.service-form > form > label {
+    padding: 0.3rem;
+}
+
+.service-form > form > input {
+    width: 100%;
+    border: none;
+    outline: none;
+    padding: 0 0.5rem;
+}
+
+.service-form > form > select {
+    width: 100%;
+    border: none;
+    outline: none;
+    padding: 0 0.3rem;
+}
+
+.service-form > form > button {
+    border: none;
+    padding: 0.7rem;
+    width: 8rem;
+    background-color: var(--primary);
+    color: var(--secondary);
+    transition: 0.7s;
+}
+
+.service-form > form > button:hover {
+    background-color: var(--primary-hover);
+}
+
+#user-dashboard > .container {
+    width: 100%;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    padding: 1.5rem;
+}
+
+#user-dashboard > .container > .reservations {
+    background-color: aliceblue;
+    width: 90%;
+    height: 80%;
+    display: flex;
+    flex-direction: column;
+    padding: 1.5rem;
+}
+
+.reservations > .header {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 1rem;
+}
+
+.reservations > .header button {
+    border: none;
+    outline: none;
+    padding: .5rem 1rem;
+}
+
+.reservations td {
+    border-top: none;
+    border-bottom: none;
+    border-left: none;
+}
+
+.reservations .actions {
+    display: flex;
+    width: 100%;
+    justify-content: center;
+    border: none;
+}
+
+.reservations .btn-action-view {
+    background-color: lightblue;
+    border: none;
+    padding: .5rem 1rem;
+    cursor: pointer;
+}
+
+.reservations .btn-action-delete {
+    background-color: red;
+    border: none;
+    padding: .5rem 1rem;
+    cursor: pointer;
+}
+
+table {
+    width: 100%;
+    border: none;
+    outline: none;
+    border-collapse: collapse;
+    display: block;
+    overflow: auto;
+    scroll-behavior: smooth;
+}
+
+thead, tbody {
+    display: table;
+    width: 100%;
+}
+
+th,
+td {
+    width: 25%;
+    border: 1px solid black;
+    padding: 8px;
+}
+
+thead {
+    background-color: #333;
+    color: white;
+    font-size: 0.875rem;
+    text-transform: uppercase;
+    letter-spacing: 2%;
+}
+
+tbody tr:nth-child(odd) {
+    background-color: #fff;
+}
+
+tbody tr:nth-child(even) {
+    background-color: #eee;
+}
+
+footer {
+    position: fixed;
+    left: 0;
+    bottom: 0;
+    right: 0;
+}
+
+footer > .content {
+    background-color: var(--primary);
+    display: flex;
+    color: var(--secondary);
+    justify-content: center;
+    align-items: center;
+    padding: 1rem;
+}

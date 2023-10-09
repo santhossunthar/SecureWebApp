@@ -1,4 +1,4 @@
-package com.securewebapp.app.servlet;
+package com.securewebapp.app.auth;
 
 import org.apache.http.HttpEntity;
 import org.apache.http.NameValuePair;

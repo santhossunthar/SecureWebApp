@@ -12,6 +12,7 @@ import com.auth0.jwt.JWTVerifier;
 import com.auth0.jwt.algorithms.Algorithm;
 import com.auth0.jwt.interfaces.DecodedJWT;
 import com.auth0.jwt.exceptions.JWTVerificationException;
+import com.securewebapp.app.auth.TokenHandler;
 
 public class CallbackServlet extends HttpServlet {
     private Algorithm algorithm = Algorithm.HMAC256("BcmIMR3Un8s1Q_dwwIU3S-n4RZx2X4aNkAJxCP_8eDp0wgYKjlhr3m-dynHbT2-C");
