@@ -17,18 +17,18 @@
             </div>
 
             <div class="nav-items">
-                <div id="profile-icon">
-                    <img src="/assets/images/user.png" alt="user-icon" width="20px" height="20px">
-                </div>
+                <ul class="nav-items-list">
+                    <a href="/dashboard">
+                        <li class="list-item">Dashboard</li>
+                    </a>
+                    <a href="/profile">
+                        <li class="list-item">Profile</li>
+                    </a>
+                    <a href="/logout">
+                        <li class="list-item">Logout</li>
+                    </a>
+                </ul>
             </div>
-        </div>
-
-        <div id="nav-items-list">
-            <ul>
-                <li><a href="/dashboard">Dashboard</a></li>
-                <li><a href="/profile">Profile</a></li>
-                <li><a href="/logout">Logout</a></li>
-            </ul>
         </div>
     </nav>
 
@@ -38,26 +38,27 @@
                 <form method="post" action="/reservation">
                     <label for="date">Date</label>
                     <input type="date" name="date"/>
-                    <label for="pretime">Preferred time</label>
-                    <select name="pretime" id="pretime">
-                        <option value="10am">10 AM</option>
-                        <option value="11am">11 AM</option>
-                        <option value="12pm">12 PM</option>
+                    <label for="time">Preferred time</label>
+                    <select name="time" id="time">
+                        <option value="10">10 AM</option>
+                        <option value="11">11 AM</option>
+                        <option value="12">12 PM</option>
                     </select>
-                    <label for="prelocation">Preferred Location</label>
+                    <label for="location">Preferred Location</label>
                     <input type="text" name="location"/>
-                    <label for="vehregnum">Vehicle Registration Number</label>
+                    <label for="vehicleno">Vehicle Registration Number</label>
                     <input type="text" name="vehicleno"/>
-                    <label for="currmileage">Current Mileage</label>
+                    <label for="mileage">Current Mileage</label>
                     <input type="text" name="mileage"/>
                     <label for="message">Message</label>
                     <input type="text" name="message"/>
                     <button type="submit">Reserve</button>
                     <button type="reset">Clear</button>
                 </form>
-                <%
-                if(request.getAttribute("response") != null){ %>
-                    <p><% request.getAttribute("response"); %></p>
+                <% String message = (String) request.getAttribute("response");
+                System.out.println(message);
+                if(message != null){ %>
+                    <p><%= message %></p>
                 <% } %>
             </div>
         </div>
