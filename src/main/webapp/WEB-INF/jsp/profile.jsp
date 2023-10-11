@@ -17,18 +17,18 @@
             </div>
 
             <div class="nav-items">
-                <div id="profile-icon">
-                    <img src="/assets/images/user.png" alt="user-icon" width="20px" height="20px">
-                </div>
+                <ul class="nav-items-list">
+                    <a href="/dashboard">
+                        <li class="list-item">Dashboard</li>
+                    </a>
+                    <a href="/profile">
+                        <li class="list-item">Profile</li>
+                    </a>
+                    <a href="/logout">
+                        <li class="list-item">Logout</li>
+                    </a>
+                </ul>
             </div>
-        </div>
-
-        <div id="nav-items-list">
-            <ul>
-                <li><a href="/dashboard">Dashboard</a></li>
-                <li><a href="/profile">Profile</a></li>
-                <li><a href="/logout">Logout</a></li>
-            </ul>
         </div>
     </nav>
 
