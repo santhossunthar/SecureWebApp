@@ -1,7 +1,5 @@
 package com.securewebapp.app.servlet;
 
-import com.securewebapp.app.auth.AuthUser;
-
 import javax.servlet.ServletException;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServlet;
@@ -9,7 +7,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.HashMap;
-import java.util.List;
 
 public class ProfileServlet extends HttpServlet {
     @Override
@@ -30,9 +27,6 @@ public class ProfileServlet extends HttpServlet {
                 }
             }
         }
-        AuthUser authUser = new AuthUser();
-        List<HashMap<String, String>> userInfo = authUser.getInfo(accessToken);
-        System.out.println(userInfo);
 
         req.getRequestDispatcher("/WEB-INF/jsp/profile.jsp")
                 .forward(req, resp);
