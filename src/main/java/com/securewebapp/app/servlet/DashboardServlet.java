@@ -15,8 +15,7 @@ public class DashboardServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp)
             throws ServletException, IOException {
-        List<HashMap<String, Object>> reservationsDetails = null;
-
+        List<HashMap<String, Object>> reservationsDetails;
         String userSessionId = req.getRequestedSessionId();
 
         if(userSessionId != null){
@@ -24,22 +23,30 @@ public class DashboardServlet extends HttpServlet {
 
             if (session != null) {
                 String userId = (String) session.getAttribute("userId");
-                System.out.println(userId);
                 ReservRepository reservRepository = new ReservRepository();
                 reservationsDetails = reservRepository
                         .getReservationsDetails(userId);
+
+                if(reservationsDetails != null){
+                    if (!reservationsDetails.isEmpty()){
+                        req.setAttribute("reservationsDetails", reservationsDetails);
+                        req.getRequestDispatcher("/WEB-INF/jsp/dashboard.jsp")
+                                .forward(req, resp);
+                    } else {
+                        req.setAttribute("msg", "empty");
+                        req.getRequestDispatcher("/WEB-INF/jsp/dashboard_action.jsp")
+                                .forward(req, resp);
+                    }
+                } else {
+                    req.setAttribute("msg", "error");
+                    req.getRequestDispatcher("/WEB-INF/jsp/dashboard_action.jsp")
+                            .forward(req, resp);
+                }
+            } else {
+                resp.sendRedirect("/login");
             }
+        } else {
+            resp.sendRedirect("/login");
         }
-
-        if(reservationsDetails == null){
-            req.setAttribute("msg", "empty");
-            req.getRequestDispatcher("/WEB-INF/jsp/dashboard_action.jsp")
-                    .forward(req, resp);
-            return;
-        }
-
-        req.setAttribute("reservationsDetails", reservationsDetails);
-        req.getRequestDispatcher("/WEB-INF/jsp/dashboard.jsp")
-                .forward(req, resp);
     }
 }
