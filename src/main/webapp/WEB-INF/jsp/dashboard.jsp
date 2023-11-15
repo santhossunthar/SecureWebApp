@@ -64,10 +64,10 @@
                            <td><%= product.get("location") %></td>
                            <td class="actions">
                                <a href="/dashboard/view?bid=<%= product.get("bookingId") %>">
-                                    <button class="btn-action-view">View</button>
+                                    <button class="btn action-view">View</button>
                                </a>
                                <a href="/dashboard/delete?bid=<%= product.get("bookingId") %>">
-                                    <button class="btn-action-delete">Delete</button>
+                                    <button class="btn action-delete">Delete</button>
                                </a>
                             </td>
                         </tr>

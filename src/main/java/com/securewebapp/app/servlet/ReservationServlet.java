@@ -21,6 +21,11 @@ public class ReservationServlet extends HttpServlet {
                 .getAttribute("userId");
         req.setAttribute("user", user);
 
+        Cookie[] cookies = req.getCookies();
+        for(Cookie cookie: cookies){
+            System.out.println(cookie.getName());
+        }
+
         String response = req.getParameter("msg");
 
         if(response == null){
@@ -90,6 +95,7 @@ public class ReservationServlet extends HttpServlet {
                 if (cookies != null) {
                     for (Cookie cookie : cookies) {
                         if ("token".equals(cookie.getName())) {
+                            System.out.println(cookie.getName());
                             idToken = cookie.getValue();
                             JwtCredential jwtCredential = new JwtCredential(idToken);
                             JwtPrincipal jwtPrincipal = jwtCredential.getAuth0JwtPrincipal();
