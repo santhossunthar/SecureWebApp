@@ -36,7 +36,15 @@
         <div class="container">
             <div class="msg-body">
                 <div class="title">
-                    <h1>You have not made any reservation yet!</h1>
+                    <h1>
+                        <%
+                        String msg = (String) request.getAttribute("msg");
+                        if(msg.equals("empty")) { %>
+                        You have not made any reservation yet!
+                        <% } else { %>
+                        Something went wrong, try again!
+                        <% } %>
+                    </h1>
                 </div>
 
                 <div class="btn-group">

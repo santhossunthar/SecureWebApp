@@ -3,6 +3,7 @@ package com.securewebapp.app.servlet;
 import com.securewebapp.app.auth.JwtCredential;
 import com.securewebapp.app.auth.JwtPrincipal;
 import com.securewebapp.app.repository.ReservRepository;
+import com.securewebapp.app.repository.impl.IReservRepository;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.Cookie;
@@ -33,6 +34,13 @@ public class DashboardServlet extends HttpServlet {
                     break;
                 }
             }
+        }
+
+        if(reservationsDetails == null){
+            req.setAttribute("msg", "empty");
+            req.getRequestDispatcher("/WEB-INF/jsp/dashboard_action.jsp")
+                    .forward(req, resp);
+            return;
         }
 
         req.setAttribute("reservationsDetails", reservationsDetails);
