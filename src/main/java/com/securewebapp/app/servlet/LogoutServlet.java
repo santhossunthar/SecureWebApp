@@ -38,9 +38,6 @@ public class LogoutServlet extends HttpServlet {
         returnUrl += "/";
 
         config = new AuthConfig();
-
-        // Build logout URL like:
-        // https://{YOUR-DOMAIN}/v2/logout?client_id={YOUR-CLIENT-ID}&returnTo=http://localhost:3000/
         String logoutUrl = String.format(
                 "https://%s/v2/logout?client_id=%s&returnTo=%s",
                 config.getDomain(),

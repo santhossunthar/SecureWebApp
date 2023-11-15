@@ -21,7 +21,7 @@ public class AuthFilter implements Filter {
             return;
         }
 
-        response.sendRedirect("/");
+        response.sendRedirect("/login");
     }
 
     public void destroy() {}
