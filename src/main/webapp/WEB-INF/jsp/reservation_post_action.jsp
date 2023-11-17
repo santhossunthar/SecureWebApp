@@ -36,7 +36,15 @@
         <div class="container">
             <div class="msg-body">
                 <div class="title">
-                    <h1>hello</h1>
+                    <h3>
+                        <%
+                        String msg = (String) request.getAttribute("msg");
+                        if(msg.equals("success")) { %>
+                        Reservation was successful!
+                        <% } else { %>
+                        Reservation was failed, Try again!
+                        <% } %>
+                     </h3>
                 </div>
 
                 <div class="btn-group">

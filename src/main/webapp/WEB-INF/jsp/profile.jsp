@@ -63,10 +63,10 @@
                 <div class="content">
                     <div class="element title">Full Name:</div>
                     <div class="element"><%= userInfo.getObject().get("nickname") %></div>
-                    <div class="element title">Country:</div>
-                    <div class="element"></div>
                     <div class="element title">Name:</div>
                     <div class="element"><%= userInfo.getObject().get("name") %></div>
+                    <div class="element title">Country:</div>
+                    <div class="element"></div>
                     <div class="element title">Contact No:</div>
                     <div class="element"></div>
                 </div>
