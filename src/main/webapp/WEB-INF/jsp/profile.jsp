@@ -1,4 +1,5 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@ page import="com.mashape.unirest.http.JsonNode" %>
 <!DOCTYPE html>
 
 <head>
@@ -36,16 +37,23 @@
         <div class="container">
             <div class="profile-info">
                 <div class="header">
+                    <%
+                       JsonNode userInfo = (JsonNode) request.getAttribute("userInfo");
+                    %>
                     <div class="img">
+                        <% if(userInfo.getObject().get("picture") != null) { %>
+                        <img src="<%= userInfo.getObject().get("picture") %>" alt="image" width="200px" height="150px">
+                        <% } else { %>
                         <img src="/assets/images/user.png" alt="image" width="200px" height="150px">
+                        <% } %>
                     </div>
 
                     <div class="info">
-                        <h2>email@email.com</h2>
-                        <h3>Username</h3>
-                        <h3>name</h3>
-                        <h3>Contact number</h3>
-                        <h3>Country</h3>
+                        <h2><%= userInfo.getObject().get("email") %></h2>
+                        <h3><%= userInfo.getObject().get("nickname") %></h3>
+                        <h3><%= userInfo.getObject().get("nickname") %></h3>
+                        <h3><%= userInfo.getObject().get("nickname") %></h3>
+                        <h3><%= userInfo.getObject().get("nickname") %></h3>
                     </div>
                 </div>
             </div>
