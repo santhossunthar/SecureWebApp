@@ -48,13 +48,27 @@
                         <% } %>
                     </div>
 
-                    <div class="info">
-                        <h2><%= userInfo.getObject().get("email") %></h2>
-                        <h3><%= userInfo.getObject().get("nickname") %></h3>
-                        <h3><%= userInfo.getObject().get("nickname") %></h3>
-                        <h3><%= userInfo.getObject().get("nickname") %></h3>
-                        <h3><%= userInfo.getObject().get("nickname") %></h3>
-                    </div>
+                     <div class="email-info">
+                         <h2><%= userInfo.getObject().get("email") %></h2>
+                         <h4>
+                            <% if((boolean) userInfo.getObject().get("email_verified")) { %>
+                            <h4>Email is verified!</h4>
+                            <% } else { %>
+                            <h4>Email is not verified!</h4>
+                            <% } %>
+                         </h4>
+                     </div>
+                </div>
+
+                <div class="content">
+                    <div class="element title">Full Name:</div>
+                    <div class="element"><%= userInfo.getObject().get("nickname") %></div>
+                    <div class="element title">Country:</div>
+                    <div class="element"></div>
+                    <div class="element title">Name:</div>
+                    <div class="element"><%= userInfo.getObject().get("name") %></div>
+                    <div class="element title">Contact No:</div>
+                    <div class="element"></div>
                 </div>
             </div>
         </div>
