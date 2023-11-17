@@ -1,7 +1,7 @@
 package com.securewebapp.app.repository;
 
 import com.securewebapp.app.connection.MySqlConn;
-import com.securewebapp.app.repository.impl.IReservRepository;
+import com.securewebapp.app.repository.impl.IReservationRepository;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -11,7 +11,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-public class ReservRepository implements IReservRepository {
+public class ReservationRepository implements IReservationRepository {
 
     public List<HashMap<String, Object>> getReservationsDetails(String userId){
         try {
@@ -77,14 +77,14 @@ public class ReservRepository implements IReservRepository {
         return false;
     }
 
-    public boolean deleteReservationDetailsById(String bookingId){
+    public boolean deleteReservationDetailsById(String bookingId, String userId){
         try {
             Connection conn =  MySqlConn.connect();
 
             if(conn != null){
                 String sql = "DELETE FROM vehicle_service WHERE username=? AND booking_id=?";
                 PreparedStatement preparedStatement = conn.prepareStatement(sql);
-                preparedStatement.setString(1, "testnew@test.com");
+                preparedStatement.setString(1, userId);
                 preparedStatement.setString(2, bookingId);
                 preparedStatement.executeUpdate();
                 return true;

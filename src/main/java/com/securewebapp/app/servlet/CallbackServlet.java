@@ -26,16 +26,19 @@ public class CallbackServlet extends HttpServlet {
     }
 
     @Override
-    public void doGet(HttpServletRequest req, HttpServletResponse res) throws IOException, ServletException {
+    public void doGet(HttpServletRequest req, HttpServletResponse res)
+            throws IOException, ServletException {
         handle(req, res);
     }
 
     @Override
-    public void doPost(HttpServletRequest req, HttpServletResponse res) throws IOException, ServletException {
+    public void doPost(HttpServletRequest req, HttpServletResponse res)
+            throws IOException, ServletException {
         handle(req, res);
     }
 
-    private void handle(HttpServletRequest req, HttpServletResponse res) throws IOException {
+    private void handle(HttpServletRequest req, HttpServletResponse res)
+            throws IOException {
         try {
             Tokens tokens = authenticationController.handle(req, res);
             SessionUtils.set(req, "accessToken", tokens.getAccessToken());

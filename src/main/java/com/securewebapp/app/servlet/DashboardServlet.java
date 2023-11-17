@@ -1,9 +1,6 @@
 package com.securewebapp.app.servlet;
 
-import com.auth0.SessionUtils;
-import com.securewebapp.app.auth.JwtCredential;
-import com.securewebapp.app.auth.JwtPrincipal;
-import com.securewebapp.app.repository.ReservRepository;
+import com.securewebapp.app.repository.ReservationRepository;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.*;
@@ -23,8 +20,8 @@ public class DashboardServlet extends HttpServlet {
 
             if (session != null) {
                 String userId = (String) session.getAttribute("userId");
-                ReservRepository reservRepository = new ReservRepository();
-                reservationsDetails = reservRepository
+                ReservationRepository reservationRepository = new ReservationRepository();
+                reservationsDetails = reservationRepository
                         .getReservationsDetails(userId);
 
                 if(reservationsDetails != null){

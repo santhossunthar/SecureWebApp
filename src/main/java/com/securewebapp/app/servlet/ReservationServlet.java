@@ -1,8 +1,6 @@
 package com.securewebapp.app.servlet;
 
-import com.securewebapp.app.auth.JwtCredential;
-import com.securewebapp.app.auth.JwtPrincipal;
-import com.securewebapp.app.repository.ReservRepository;
+import com.securewebapp.app.repository.ReservationRepository;
 import com.securewebapp.app.helper.InputValidator;
 
 import javax.servlet.ServletException;
@@ -73,8 +71,8 @@ public class ReservationServlet extends HttpServlet {
                             postValidatedData.put("reservationMessage", reservationMessage);
                             postValidatedData.put("userName", userId);
 
-                            ReservRepository reservRepository = new ReservRepository();
-                            if(reservRepository.addReservationDetails(postValidatedData)){
+                            ReservationRepository reservationRepository = new ReservationRepository();
+                            if(reservationRepository.addReservationDetails(postValidatedData)){
                                 req.setAttribute("msg", "success");
                                 req.getRequestDispatcher("/WEB-INF/jsp/reservation_post_action.jsp")
                                         .forward(req, resp);
