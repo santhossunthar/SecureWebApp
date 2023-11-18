@@ -15,7 +15,6 @@ public class LoginServlet extends HttpServlet {
     public void doGet(
             HttpServletRequest request,
             HttpServletResponse response) throws ServletException, IOException {
-        // URL where the application will receive the authorization code
         String callbackUrl = String.format(
                 "%s://%s:%s/callback",
                 "http",
@@ -26,8 +25,6 @@ public class LoginServlet extends HttpServlet {
         AuthConfig config = new AuthConfig();
         AuthenticationProvider authenticationProvider = new AuthenticationProvider();
         AuthenticationController authenticationController = authenticationProvider.authenticationController(config);
-
-        // Create the authorization URL to redirect the user to begin the authentication flow.
         String authURL = authenticationController.buildAuthorizeUrl(request, response, callbackUrl)
                 .withScope(config.getScope())
                 .build();

@@ -30,8 +30,6 @@ public class ProfileServlet extends HttpServlet {
                     AuthUser authUser = new AuthUser(authConfig.getDomain(), accessToken);
 
                     JsonNode userInfo = authUser.getInfo();
-                    System.out.println(userInfo);
-
                     req.setAttribute("userInfo", userInfo);
                     req.getRequestDispatcher("/WEB-INF/jsp/profile.jsp")
                             .forward(req, resp);

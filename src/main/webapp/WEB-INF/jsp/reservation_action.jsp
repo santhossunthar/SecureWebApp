@@ -18,8 +18,8 @@
 
             <div class="nav-items">
                 <ul class="nav-items-list">
-                    <a href="/dashboard">
-                        <li class="list-item">Dashboard</li>
+                    <a href="/reservation">
+                        <li class="list-item">Reservation</li>
                     </a>
                     <a href="/profile">
                         <li class="list-item">Profile</li>
@@ -39,17 +39,18 @@
                     <h3>
                         <%
                         String msg = (String) request.getAttribute("msg");
-                        if(msg.equals("success")) { %>
+                        if(msg.equals("empty")) { %>
+                        You have not made any reservation yet!
+                        <% } else if(msg.equals("success")) { %>
                         Reservation was successful!
                         <% } else { %>
-                        Reservation was failed, Try again!
+                        Something went wrong, Try again!
                         <% } %>
                      </h3>
                 </div>
 
                 <div class="btn-group">
-                    <a href="/reservation"><button class="btn">Reserve</button></a>
-                    <a href="/dashboard"><button class="btn">Dashboard</button></a>
+                    <a href="/reservation/add"><button class="btn">Reserve</button></a>
                 </div>
             </div>
         </div>

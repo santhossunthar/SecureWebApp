@@ -17,7 +17,7 @@ public class CallbackServlet extends HttpServlet {
 
     @Override
     public void init() throws ServletException {
-        redirectOnSuccess = "/dashboard";
+        redirectOnSuccess = "/reservation";
         redirectOnFail = "/login";
 
         AuthConfig configs = new AuthConfig();

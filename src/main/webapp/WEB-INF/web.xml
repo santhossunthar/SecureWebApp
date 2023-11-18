@@ -12,10 +12,6 @@
 
   <filter-mapping>
     <filter-name>AuthFilter</filter-name>
-    <url-pattern>/dashboard</url-pattern>
-  </filter-mapping>
-  <filter-mapping>
-    <filter-name>AuthFilter</filter-name>
     <url-pattern>/reservation/*</url-pattern>
   </filter-mapping>
   <filter-mapping>
@@ -40,16 +36,16 @@
     <servlet-class>com.securewebapp.app.servlet.LogoutServlet</servlet-class>
   </servlet>
   <servlet>
-    <servlet-name>DashboardServlet</servlet-name>
-    <servlet-class>com.securewebapp.app.servlet.DashboardServlet</servlet-class>
+    <servlet-name>ProfileServlet</servlet-name>
+    <servlet-class>com.securewebapp.app.servlet.ProfileServlet</servlet-class>
   </servlet>
   <servlet>
     <servlet-name>ReservationServlet</servlet-name>
     <servlet-class>com.securewebapp.app.servlet.ReservationServlet</servlet-class>
   </servlet>
   <servlet>
-    <servlet-name>ProfileServlet</servlet-name>
-    <servlet-class>com.securewebapp.app.servlet.ProfileServlet</servlet-class>
+    <servlet-name>ReservationAddServlet</servlet-name>
+    <servlet-class>com.securewebapp.app.servlet.ReservationAddServlet</servlet-class>
   </servlet>
   <servlet>
     <servlet-name>ReservationDeleteServlet</servlet-name>
@@ -69,19 +65,19 @@
     <url-pattern>/callback</url-pattern>
   </servlet-mapping>
   <servlet-mapping>
-    <servlet-name>DashboardServlet</servlet-name>
-    <url-pattern>/dashboard</url-pattern>
+    <servlet-name>ProfileServlet</servlet-name>
+    <url-pattern>/profile</url-pattern>
   </servlet-mapping>
   <servlet-mapping>
     <servlet-name>ReservationServlet</servlet-name>
     <url-pattern>/reservation</url-pattern>
   </servlet-mapping>
   <servlet-mapping>
-    <servlet-name>ProfileServlet</servlet-name>
-    <url-pattern>/profile</url-pattern>
+    <servlet-name>ReservationAddServlet</servlet-name>
+    <url-pattern>/reservation/add</url-pattern>
   </servlet-mapping>
   <servlet-mapping>
     <servlet-name>ReservationDeleteServlet</servlet-name>
-    <url-pattern>/dashboard/delete</url-pattern>
+    <url-pattern>/reservation/delete</url-pattern>
   </servlet-mapping>
 </web-app>

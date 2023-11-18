@@ -27,11 +27,11 @@ public class ReservationDeleteServlet extends HttpServlet {
 
                 if(!result){
                     req.setAttribute("msg", "error");
-                    req.getRequestDispatcher("/WEB-INF/jsp/dashboard_action.jsp")
+                    req.getRequestDispatcher("/WEB-INF/jsp/reservation_action.jsp")
                             .forward(req, resp);
                 }
 
-                resp.sendRedirect("/dashboard");
+                resp.sendRedirect("/reservation");
             } else {
                 resp.sendRedirect("/login");
             }
