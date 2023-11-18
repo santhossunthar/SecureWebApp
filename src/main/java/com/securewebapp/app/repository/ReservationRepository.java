@@ -18,7 +18,7 @@ public class ReservationRepository implements IReservationRepository {
             Connection conn =  MySqlConn.connect();
 
             if(conn != null) {
-                String sql = "SELECT * FROM vehicle_service WHERE username=?";
+                String sql = "SELECT booking_id, date, time, location FROM vehicle_service WHERE username=?";
                 PreparedStatement preparedStatement = conn.prepareStatement(sql);
                 preparedStatement.setString(1, userId);
                 ResultSet resultSet = preparedStatement.executeQuery();
@@ -30,8 +30,38 @@ public class ReservationRepository implements IReservationRepository {
                     data.put("date", resultSet.getString("date"));
                     data.put("time", resultSet.getString("time"));
                     data.put("location", resultSet.getString("location"));
+                    dataList.add(data);
+                }
+                return dataList;
+            }
+        }catch (SQLException ex){
+            System.out.println(ex);
+        }
+        return null;
+    }
+
+    @Override
+    public List<HashMap<String, Object>> getReservationsDetails(String userId, String bookingId) {
+        try {
+            Connection conn =  MySqlConn.connect();
+
+            if(conn != null) {
+                String sql = "SELECT booking_id, date, time, location, vehicle_no, mileage, message FROM vehicle_service WHERE username=? AND booking_id=?";
+                PreparedStatement preparedStatement = conn.prepareStatement(sql);
+                preparedStatement.setString(1, userId);
+                preparedStatement.setString(2, bookingId);
+                ResultSet resultSet = preparedStatement.executeQuery();
+
+                List<HashMap<String, Object>> dataList = new ArrayList<>();
+                while (resultSet.next()) {
+                    HashMap data = new HashMap();
+                    data.put("bookingId", resultSet.getInt("booking_id"));
+                    data.put("date", resultSet.getString("date"));
+                    data.put("time", resultSet.getString("time"));
+                    data.put("location", resultSet.getString("location"));
                     data.put("vehicleNo", resultSet.getString("vehicle_no"));
                     data.put("mileage", resultSet.getString("mileage"));
+                    data.put("message", resultSet.getString("message"));
                     dataList.add(data);
                 }
                 return dataList;

@@ -1,4 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+<%@ page import="java.util.HashMap" %>
+<%@ page import="java.util.List" %>
 <!DOCTYPE html>
 
 <head>
@@ -35,30 +38,35 @@
     <section id="user-reservation">
         <div class="container">
             <div class="service-form">
+                <%
+                   List<HashMap<String, Object>> productList = (List<HashMap<String, Object>>) request.getAttribute("reservationsDetails");
+                   for (HashMap<String, Object> product : productList) {
+                %>
                 <div class="header">
                     <h2>Reservation Details</h2>
 
                     <div class="btn-group">
                         <a href="/reservation/add"><button class="btn">Reserve</button></a>
-                        <a href="/reservation/delete"><button class="btn action-delete">Delete</button></a>
+                        <a href="/reservation/delete?bid=<%= product.get("bookingId") %>"><button class="btn action-delete">Delete</button></a>
                     </div>
                 </div>
                 <div class="reservation-info">
                     <h4 class="element title">Booking Id</h4>
-                    <h4 class="element">test</h4>
+                    <h4 class="element"><%= product.get("bookingId") %></h4>
                     <h4 class="element">Date</h4>
-                    <h4 class="element">test</h4>
+                    <h4 class="element"><%= product.get("date") %></h4>
                     <h4 class="element">Time</h4>
-                    <h4 class="element">test</h4>
+                    <h4 class="element"><%= product.get("time") %></h4>
                     <h4 class="element">Location</h4>
-                    <h4 class="element">test</h4>
+                    <h4 class="element"><%= product.get("location") %></h4>
                     <h4 class="element">Vechile No</h4>
-                    <h4 class="element">test</h4>
+                    <h4 class="element"><%= product.get("vehicleNo") %></h4>
                     <h4 class="element">Mileage</h4>
-                    <h4 class="element">test</h4>
+                    <h4 class="element"><%= product.get("mileage") %></h4>
                     <h4 class="element">Message</h4>
-                    <h4 class="element">test</h4>
+                    <h4 class="element"><%= product.get("message") %></h4>
                 </div>
+                <% } %>
             </div>
         </div>
     </section>
