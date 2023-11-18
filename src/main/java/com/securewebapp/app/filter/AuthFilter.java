@@ -1,4 +1,4 @@
-package com.securewebapp.app.auth;
+package com.securewebapp.app.filter;
 
 import javax.servlet.*;
 import javax.servlet.http.HttpServletRequest;
