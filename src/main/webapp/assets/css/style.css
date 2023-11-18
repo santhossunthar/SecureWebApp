@@ -136,6 +136,11 @@ nav > .container > .brand-logo {
     gap: 4rem;
 }
 
+.header > .img {
+    border-radius: 50%;
+    border: 2px solid rgba(0, 0, 0, 0.2);
+}
+
 .header > .email-info {
     display: flex;
     flex-direction: column;
@@ -213,6 +218,38 @@ nav > .container > .brand-logo {
 
 .service-form > form > button:hover {
     background-color: var(--primary-hover);
+}
+
+.service-form > .header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.service-form > .header .btn {
+    padding: .5rem;
+}
+
+.service-form > .header .action-delete {
+    background-color: rgb(190, 10, 10);
+}
+
+.service-form > .header .action-delete:hover {
+    background-color: rgb(223, 39, 39);
+}
+
+.service-form > .reservation-info {
+    display: grid;
+    grid-gap: .5rem 0;
+    grid-template-columns: 1fr 1fr;
+    grid-auto-flow: dense;
+    padding: .5rem;
+    margin-top: .7rem;
+}
+
+.reservation-info > .element {
+    background-color: rgb(255, 255, 255);
+    padding: .4rem;
 }
 
 #user-dashboard > .container {
@@ -319,6 +356,7 @@ td {
     width: 25%;
     border: 1px solid black;
     padding: 8px;
+    text-align: center;
 }
 
 thead {

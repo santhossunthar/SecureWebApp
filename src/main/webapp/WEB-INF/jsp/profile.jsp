@@ -19,8 +19,8 @@
 
             <div class="nav-items">
                 <ul class="nav-items-list">
-                    <a href="/dashboard">
-                        <li class="list-item">Dashboard</li>
+                    <a href="/reservation">
+                        <li class="list-item">Reservation</li>
                     </a>
                     <a href="/profile">
                         <li class="list-item">Profile</li>

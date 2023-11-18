@@ -48,6 +48,10 @@
     <servlet-class>com.securewebapp.app.servlet.ReservationAddServlet</servlet-class>
   </servlet>
   <servlet>
+    <servlet-name>ReservationViewServlet</servlet-name>
+    <servlet-class>com.securewebapp.app.servlet.ReservationViewServlet</servlet-class>
+  </servlet>
+  <servlet>
     <servlet-name>ReservationDeleteServlet</servlet-name>
     <servlet-class>com.securewebapp.app.servlet.ReservationDeleteServlet</servlet-class>
   </servlet>
@@ -75,6 +79,10 @@
   <servlet-mapping>
     <servlet-name>ReservationAddServlet</servlet-name>
     <url-pattern>/reservation/add</url-pattern>
+  </servlet-mapping>
+  <servlet-mapping>
+    <servlet-name>ReservationViewServlet</servlet-name>
+    <url-pattern>/reservation/view</url-pattern>
   </servlet-mapping>
   <servlet-mapping>
     <servlet-name>ReservationDeleteServlet</servlet-name>
