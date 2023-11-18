@@ -45,7 +45,7 @@
                         <option value="12">12 PM</option>
                     </select>
                     <label for="location">Preferred Location</label>
-                    <select id='location'>
+                    <select name="location" id="location">
                       <option value="Colombo">Colombo</option>
                       <option value="Gampaha">Gampaha</option>
                       <option value="Kalutara">Kalutara</option>
