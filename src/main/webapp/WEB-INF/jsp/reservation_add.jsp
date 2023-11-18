@@ -78,6 +78,7 @@
                     <input type="text" name="mileage"/>
                     <label for="message">Message</label>
                     <input type="text" name="message"/>
+                    <input type="hidden" name="token" value="<%= (String) request.getAttribute("csrfToken") %>"/>
                     <button type="submit">Reserve</button>
                     <button type="reset">Clear</button>
                 </form>

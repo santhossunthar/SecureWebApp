@@ -63,12 +63,17 @@
                            <td><%= product.get("time") %></td>
                            <td><%= product.get("location") %></td>
                            <td class="actions">
-                               <a href="/reservation/view?bid=<%= product.get("bookingId") %>">
-                                    <button class="btn action-view">View</button>
-                               </a>
-                               <a href="/reservation/delete?bid=<%= product.get("bookingId") %>">
-                                    <button class="btn action-delete">Delete</button>
-                               </a>
+                               <form action="/reservation/view" method="POST">
+                                  <input type="hidden" name="bid" value="<%= (int) product.get("bookingId") %>"/>
+                                  <input type="hidden" name="token" value="<%= (String) request.getAttribute("csrfToken") %>"/>
+                                  <button class="btn action-view" type="submit">View</button>
+                               </form>
+
+                               <form action="/reservation/delete" method="POST">
+                                 <input type="hidden" name="bid" value="<%= (int) product.get("bookingId") %>"/>
+                                 <input type="hidden" name="token" value="<%= (String) request.getAttribute("csrfToken") %>"/>
+                                 <button class="btn action-delete" type="submit">Delete</button>
+                               </form>
                             </td>
                         </tr>
                        <%

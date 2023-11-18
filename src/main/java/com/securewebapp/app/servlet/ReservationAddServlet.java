@@ -1,5 +1,6 @@
 package com.securewebapp.app.servlet;
 
+import com.securewebapp.app.helper.CSRFTokenGenerator;
 import com.securewebapp.app.repository.ReservationRepository;
 import com.securewebapp.app.helper.InputValidator;
 
@@ -18,6 +19,9 @@ public class ReservationAddServlet extends HttpServlet {
             HttpSession session = req.getSession(false);
 
             if (session != null) {
+                String csrfToken = (String) session.getAttribute("csrfToken");
+
+                req.setAttribute("csrfToken", csrfToken);
                 req.getRequestDispatcher("/WEB-INF/jsp/reservation_add.jsp")
                         .forward(req, resp);
             } else {
@@ -39,6 +43,15 @@ public class ReservationAddServlet extends HttpServlet {
 
                 if (session != null) {
                     String userId = (String) session.getAttribute("userId");
+                    String csrfToken = (String) session.getAttribute("csrfToken");
+                    String requestedCsrfToken = req.getParameter("token");
+
+                    if(!csrfToken.equals(requestedCsrfToken)) {
+                        req.setAttribute("msg", "error");
+                        req.getRequestDispatcher("/WEB-INF/jsp/reservation_action.jsp")
+                                .forward(req, resp);
+                        return;
+                    }
 
                     String reservationDate = req.getParameter("date");
                     String reservationTime = req.getParameter("time");

@@ -5,6 +5,7 @@ import com.auth0.IdentityVerificationException;
 import com.auth0.SessionUtils;
 import com.auth0.Tokens;
 import com.securewebapp.app.auth.*;
+import com.securewebapp.app.helper.CSRFTokenGenerator;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.*;
@@ -47,6 +48,9 @@ public class CallbackServlet extends HttpServlet {
             JwtCredential jwtCredential = new JwtCredential(tokens.getIdToken());
             JwtPrincipal jwtPrincipal = jwtCredential.getAuth0JwtPrincipal();
             SessionUtils.set(req, "userId", jwtPrincipal.getName());
+
+            CSRFTokenGenerator csrfTokenGenerator = new CSRFTokenGenerator();
+            SessionUtils.set(req, "csrfToken", csrfTokenGenerator.generate());
 
             res.sendRedirect(redirectOnSuccess);
         } catch (IdentityVerificationException e) {

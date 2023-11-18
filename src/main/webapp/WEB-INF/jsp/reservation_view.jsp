@@ -47,7 +47,12 @@
 
                     <div class="btn-group">
                         <a href="/reservation/add"><button class="btn">Reserve</button></a>
-                        <a href="/reservation/delete?bid=<%= product.get("bookingId") %>"><button class="btn action-delete">Delete</button></a>
+
+                        <form action="/reservation/delete" method="POST">
+                             <input type="hidden" name="bid" value="<%= (int) product.get("bookingId") %>"/>
+                             <input type="hidden" name="token" value="<%= (String) request.getAttribute("csrfToken") %>"/>
+                             <button class="btn action-delete" type="submit">Delete</button>
+                        </form>
                     </div>
                 </div>
                 <div class="reservation-info">

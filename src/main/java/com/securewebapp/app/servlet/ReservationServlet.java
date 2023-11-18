@@ -20,12 +20,15 @@ public class ReservationServlet extends HttpServlet {
 
             if (session != null) {
                 String userId = (String) session.getAttribute("userId");
+                String csrfToken = (String) session.getAttribute("csrfToken");
+
                 ReservationRepository reservationRepository = new ReservationRepository();
                 reservationsDetails = reservationRepository
                         .getReservationsDetails(userId);
 
                 if(reservationsDetails != null){
                     if (!reservationsDetails.isEmpty()){
+                        req.setAttribute("csrfToken", csrfToken);
                         req.setAttribute("reservationsDetails", reservationsDetails);
                         req.getRequestDispatcher("/WEB-INF/jsp/reservation.jsp")
                                 .forward(req, resp);
