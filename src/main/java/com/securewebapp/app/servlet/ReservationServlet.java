@@ -1,5 +1,7 @@
 package com.securewebapp.app.servlet;
 
+import com.securewebapp.app.api.Endpoint;
+import com.securewebapp.app.api.Pages;
 import com.securewebapp.app.repository.ReservationRepository;
 
 import javax.servlet.ServletException;
@@ -9,6 +11,10 @@ import java.util.HashMap;
 import java.util.List;
 
 public class ReservationServlet extends HttpServlet {
+    private final String reservationPage = Pages.reservation;
+    private final String reservationActionPage = Pages.reservationAction;
+    private final String loginEndpoint = Endpoint.login;
+
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp)
             throws ServletException, IOException {
@@ -30,23 +36,23 @@ public class ReservationServlet extends HttpServlet {
                     if (!reservationsDetails.isEmpty()){
                         req.setAttribute("csrfToken", csrfToken);
                         req.setAttribute("reservationsDetails", reservationsDetails);
-                        req.getRequestDispatcher("/WEB-INF/jsp/reservation.jsp")
+                        req.getRequestDispatcher(reservationPage)
                                 .forward(req, resp);
                     } else {
                         req.setAttribute("msg", "empty");
-                        req.getRequestDispatcher("/WEB-INF/jsp/reservation_action.jsp")
+                        req.getRequestDispatcher(reservationActionPage)
                                 .forward(req, resp);
                     }
                 } else {
                     req.setAttribute("msg", "error");
-                    req.getRequestDispatcher("/WEB-INF/jsp/reservation_action.jsp")
+                    req.getRequestDispatcher(reservationActionPage)
                             .forward(req, resp);
                 }
             } else {
-                resp.sendRedirect("/login");
+                resp.sendRedirect(loginEndpoint);
             }
         } else {
-            resp.sendRedirect("/login");
+            resp.sendRedirect(loginEndpoint);
         }
     }
 }

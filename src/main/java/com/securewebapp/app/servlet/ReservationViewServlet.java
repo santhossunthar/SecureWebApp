@@ -1,5 +1,7 @@
 package com.securewebapp.app.servlet;
 
+import com.securewebapp.app.api.Endpoint;
+import com.securewebapp.app.api.Pages;
 import com.securewebapp.app.repository.ReservationRepository;
 
 import javax.servlet.ServletException;
@@ -12,6 +14,10 @@ import java.util.HashMap;
 import java.util.List;
 
 public class ReservationViewServlet extends HttpServlet {
+    private final String reservationViewPage = Pages.reservationView;
+    private final String reservationActionPage = Pages.reservationAction;
+    private final String loginEndpoint = Endpoint.login;
+
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp)
             throws ServletException, IOException {
@@ -28,7 +34,7 @@ public class ReservationViewServlet extends HttpServlet {
 
                 if(!csrfToken.equals(requestedCsrfToken)) {
                     req.setAttribute("msg", "error");
-                    req.getRequestDispatcher("/WEB-INF/jsp/reservation_action.jsp")
+                    req.getRequestDispatcher(reservationActionPage)
                             .forward(req, resp);
                     return;
                 }
@@ -43,23 +49,23 @@ public class ReservationViewServlet extends HttpServlet {
                     if (!reservationsDetails.isEmpty()){
                         req.setAttribute("reservationsDetails", reservationsDetails);
                         req.setAttribute("csrfToken", csrfToken);
-                        req.getRequestDispatcher("/WEB-INF/jsp/reservation_view.jsp")
+                        req.getRequestDispatcher(reservationViewPage)
                                 .forward(req, resp);
                     } else {
                         req.setAttribute("msg", "empty");
-                        req.getRequestDispatcher("/WEB-INF/jsp/reservation_action.jsp")
+                        req.getRequestDispatcher(reservationActionPage)
                                 .forward(req, resp);
                     }
                 } else {
                     req.setAttribute("msg", "error");
-                    req.getRequestDispatcher("/WEB-INF/jsp/reservation_action.jsp")
+                    req.getRequestDispatcher(reservationActionPage)
                             .forward(req, resp);
                 }
             } else {
-                resp.sendRedirect("/login");
+                resp.sendRedirect(loginEndpoint);
             }
         } else {
-            resp.sendRedirect("/login");
+            resp.sendRedirect(loginEndpoint);
         }
     }
 }

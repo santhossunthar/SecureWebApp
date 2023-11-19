@@ -1,5 +1,7 @@
 package com.securewebapp.app.servlet;
 
+import com.securewebapp.app.api.Endpoint;
+import com.securewebapp.app.api.Pages;
 import com.securewebapp.app.repository.ReservationRepository;
 
 import javax.servlet.ServletException;
@@ -10,6 +12,10 @@ import javax.servlet.http.HttpSession;
 import java.io.IOException;
 
 public class ReservationDeleteServlet extends HttpServlet {
+    private final String reservationActionPage = Pages.reservationAction;
+    private final String loginEndpoint = Endpoint.login;
+    private final String reservationEndpoint = Endpoint.reservation;
+
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp)
             throws ServletException, IOException {
@@ -25,7 +31,7 @@ public class ReservationDeleteServlet extends HttpServlet {
 
                 if(!csrfToken.equals(requestedCsrfToken)) {
                     req.setAttribute("msg", "error");
-                    req.getRequestDispatcher("/WEB-INF/jsp/reservation_action.jsp")
+                    req.getRequestDispatcher(reservationActionPage)
                             .forward(req, resp);
                     return;
                 }
@@ -37,16 +43,16 @@ public class ReservationDeleteServlet extends HttpServlet {
 
                 if(!result){
                     req.setAttribute("msg", "error");
-                    req.getRequestDispatcher("/WEB-INF/jsp/reservation_action.jsp")
+                    req.getRequestDispatcher(reservationActionPage)
                             .forward(req, resp);
                 }
 
-                resp.sendRedirect("/reservation");
+                resp.sendRedirect(reservationEndpoint);
             } else {
-                resp.sendRedirect("/login");
+                resp.sendRedirect(loginEndpoint);
             }
         } else {
-            resp.sendRedirect("/login");
+            resp.sendRedirect(loginEndpoint);
         }
     }
 }

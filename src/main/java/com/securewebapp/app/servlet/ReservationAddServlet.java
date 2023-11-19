@@ -1,6 +1,7 @@
 package com.securewebapp.app.servlet;
 
-import com.securewebapp.app.helper.CSRFTokenGenerator;
+import com.securewebapp.app.api.Endpoint;
+import com.securewebapp.app.api.Pages;
 import com.securewebapp.app.repository.ReservationRepository;
 import com.securewebapp.app.helper.InputValidator;
 
@@ -10,25 +11,29 @@ import java.io.IOException;
 import java.util.HashMap;
 
 public class ReservationAddServlet extends HttpServlet {
+    private final String reservationAddPage = Pages.reservationAdd;
+    private final String reservationActionPage = Pages.reservationAction;
+    private final String loginEndpoint = Endpoint.login;
+
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp)
             throws ServletException, IOException {
         String userSessionId = req.getRequestedSessionId();
 
-        if(userSessionId != null) {
+        if (userSessionId != null) {
             HttpSession session = req.getSession(false);
 
             if (session != null) {
                 String csrfToken = (String) session.getAttribute("csrfToken");
 
                 req.setAttribute("csrfToken", csrfToken);
-                req.getRequestDispatcher("/WEB-INF/jsp/reservation_add.jsp")
+                req.getRequestDispatcher(reservationAddPage)
                         .forward(req, resp);
             } else {
-                resp.sendRedirect("/login");
+                resp.sendRedirect(loginEndpoint);
             }
         } else {
-            resp.sendRedirect("/login");
+            resp.sendRedirect(loginEndpoint);
         }
     }
 
@@ -38,7 +43,7 @@ public class ReservationAddServlet extends HttpServlet {
         try {
             String userSessionId = req.getRequestedSessionId();
 
-            if(userSessionId != null) {
+            if (userSessionId != null) {
                 HttpSession session = req.getSession(false);
 
                 if (session != null) {
@@ -46,9 +51,9 @@ public class ReservationAddServlet extends HttpServlet {
                     String csrfToken = (String) session.getAttribute("csrfToken");
                     String requestedCsrfToken = req.getParameter("token");
 
-                    if(!csrfToken.equals(requestedCsrfToken)) {
+                    if (!csrfToken.equals(requestedCsrfToken)) {
                         req.setAttribute("msg", "error");
-                        req.getRequestDispatcher("/WEB-INF/jsp/reservation_action.jsp")
+                        req.getRequestDispatcher(reservationActionPage)
                                 .forward(req, resp);
                         return;
                     }
@@ -60,7 +65,7 @@ public class ReservationAddServlet extends HttpServlet {
                     String reservationMileage = req.getParameter("mileage");
                     String reservationMessage = req.getParameter("message");
 
-                    if(reservationDate != null
+                    if (reservationDate != null
                             && reservationTime != null
                             && reservationLocation != null
                             && reservationVehicleNo != null
@@ -85,32 +90,32 @@ public class ReservationAddServlet extends HttpServlet {
                             postValidatedData.put("userName", userId);
 
                             ReservationRepository reservationRepository = new ReservationRepository();
-                            if(reservationRepository.addReservationDetails(postValidatedData)){
+                            if (reservationRepository.addReservationDetails(postValidatedData)) {
                                 req.setAttribute("msg", "success");
-                                req.getRequestDispatcher("/WEB-INF/jsp/reservation_action.jsp")
+                                req.getRequestDispatcher(reservationActionPage)
                                         .forward(req, resp);
                             } else {
                                 req.setAttribute("msg", "error");
-                                req.getRequestDispatcher("/WEB-INF/jsp/reservation_action.jsp")
+                                req.getRequestDispatcher(reservationActionPage)
                                         .forward(req, resp);
                             }
                         } else {
                             req.setAttribute("msg", "error");
-                            req.getRequestDispatcher("/WEB-INF/jsp/reservation_action.jsp")
+                            req.getRequestDispatcher(reservationActionPage)
                                     .forward(req, resp);
                         }
                     } else {
                         req.setAttribute("msg", "error");
-                        req.getRequestDispatcher("/WEB-INF/jsp/reservation_action.jsp")
+                        req.getRequestDispatcher(reservationActionPage)
                                 .forward(req, resp);
                     }
                 } else {
-                    resp.sendRedirect("/login");
+                    resp.sendRedirect(loginEndpoint);
                 }
             } else {
-                resp.sendRedirect("/login");
+                resp.sendRedirect(loginEndpoint);
             }
-        }catch (Exception ex){
+        } catch (Exception ex) {
             throw new ServletException();
         }
     }

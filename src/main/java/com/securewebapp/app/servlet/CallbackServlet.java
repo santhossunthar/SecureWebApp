@@ -5,6 +5,7 @@ import com.auth0.IdentityVerificationException;
 import com.auth0.SessionUtils;
 import com.auth0.Tokens;
 import com.securewebapp.app.auth.*;
+import com.securewebapp.app.api.Endpoint;
 import com.securewebapp.app.helper.CSRFTokenGenerator;
 
 import javax.servlet.ServletException;
@@ -12,15 +13,12 @@ import javax.servlet.http.*;
 import java.io.IOException;
 
 public class CallbackServlet extends HttpServlet {
-    private String redirectOnSuccess;
-    private String redirectOnFail;
     private AuthenticationController authenticationController;
+    private final String loginEndpoint = Endpoint.login;
+    private final String reservationEndpoint = Endpoint.reservation;
 
     @Override
     public void init() throws ServletException {
-        redirectOnSuccess = "/reservation";
-        redirectOnFail = "/login";
-
         AuthConfig configs = new AuthConfig();
         AuthenticationProvider authenticationProvider = new AuthenticationProvider();
         authenticationController = authenticationProvider.authenticationController(configs);
@@ -52,9 +50,9 @@ public class CallbackServlet extends HttpServlet {
             CSRFTokenGenerator csrfTokenGenerator = new CSRFTokenGenerator();
             SessionUtils.set(req, "csrfToken", csrfTokenGenerator.generate());
 
-            res.sendRedirect(redirectOnSuccess);
+            res.sendRedirect(reservationEndpoint);
         } catch (IdentityVerificationException e) {
-            res.sendRedirect(redirectOnFail);
+            res.sendRedirect(loginEndpoint);
         }
     }
 
