@@ -5,7 +5,6 @@ import com.securewebapp.app.api.Endpoint;
 import com.securewebapp.app.auth.AuthConfig;
 import com.securewebapp.app.auth.AuthenticationProvider;
 
-import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -14,12 +13,11 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 public class LoginServlet extends HttpServlet {
-    private final String rootPath = Endpoint.root;
     private static final Logger logger = Logger.getLogger(LoginServlet.class.getName());
 
     @Override
     public void doGet(
-            HttpServletRequest request, HttpServletResponse res) throws ServletException, IOException {
+            HttpServletRequest request, HttpServletResponse res) throws IOException {
         try {
             String callbackUrl = String.format(
                     "%s://%s:%s/callback",
@@ -38,7 +36,7 @@ public class LoginServlet extends HttpServlet {
             res.sendRedirect(authURL);
         } catch (IOException ex) {
             logger.log(Level.SEVERE, "An error occurred: " + ex.getMessage(), ex);
-            res.sendRedirect(rootPath);
+            res.sendRedirect(Endpoint.root);
         }
     }
 }

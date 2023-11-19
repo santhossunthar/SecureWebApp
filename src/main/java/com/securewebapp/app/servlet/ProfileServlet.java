@@ -14,14 +14,11 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 public class ProfileServlet extends HttpServlet {
-    private final String rootPath = Endpoint.root;
-    private final String profilePage = Pages.userProfile;
-    private final String loginEndpoint = Endpoint.login;
     private static final Logger logger = Logger.getLogger(ProfileServlet.class.getName());
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse res)
-            throws ServletException, IOException {
+            throws IOException {
         try {
             String userSessionId = req.getRequestedSessionId();
 
@@ -29,7 +26,6 @@ public class ProfileServlet extends HttpServlet {
                 HttpSession session = req.getSession(false);
 
                 if (session != null) {
-                    String userId = (String) session.getAttribute("userId");
                     String accessToken = (String) session.getAttribute("accessToken");
 
                     AuthConfig authConfig = new AuthConfig();
@@ -37,17 +33,17 @@ public class ProfileServlet extends HttpServlet {
                     JsonNode userInfo = authUser.getInfo();
 
                     req.setAttribute("userInfo", userInfo);
-                    req.getRequestDispatcher(profilePage)
+                    req.getRequestDispatcher(Pages.userProfile)
                             .forward(req, res);
                 } else {
-                    res.sendRedirect(loginEndpoint);
+                    res.sendRedirect(Endpoint.login);
                 }
             } else {
-                res.sendRedirect(loginEndpoint);
+                res.sendRedirect(Endpoint.login);
             }
         } catch (ServletException | IOException | UnirestException ex) {
             logger.log(Level.SEVERE, "An error occurred: " + ex.getMessage(), ex);
-            res.sendRedirect(rootPath);
+            res.sendRedirect(Endpoint.root);
         }
     }
 }

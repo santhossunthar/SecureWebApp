@@ -1,10 +1,8 @@
 package com.securewebapp.app.servlet;
 
-import com.auth0.IdentityVerificationException;
 import com.securewebapp.app.api.Endpoint;
 import com.securewebapp.app.auth.AuthConfig;
 
-import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -13,20 +11,18 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 public class LogoutServlet extends HttpServlet {
-    private AuthConfig config;
-    private final String rootPath = Endpoint.root;
     private static final Logger logger = Logger.getLogger(CallbackServlet.class.getName());
 
     @Override
     protected void doGet(
             final HttpServletRequest req,
-            final HttpServletResponse res) throws ServletException, IOException {
+            final HttpServletResponse res) throws IOException {
         try{
             clearSession(req);
             res.sendRedirect(getLogoutUrl(req));
         } catch (IOException ex) {
             logger.log(Level.SEVERE, "An error occurred: " + ex.getMessage(), ex);
-            res.sendRedirect(rootPath);
+            res.sendRedirect(Endpoint.root);
         }
     }
 
@@ -48,14 +44,13 @@ public class LogoutServlet extends HttpServlet {
 
         returnUrl += "/";
 
-        config = new AuthConfig();
-        String logoutUrl = String.format(
+        AuthConfig config = new AuthConfig();
+
+        return String.format(
                 "https://%s/v2/logout?client_id=%s&returnTo=%s",
                 config.getDomain(),
                 config.getClientId(),
                 returnUrl
         );
-
-        return logoutUrl;
     }
 }

@@ -16,15 +16,11 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 public class ReservationViewServlet extends HttpServlet {
-    private final String reservationViewPage = Pages.reservationView;
-    private final String reservationActionPage = Pages.reservationAction;
-    private final String rootPath = Endpoint.root;
-    private final String loginEndpoint = Endpoint.login;
     private static final Logger logger = Logger.getLogger(ReservationAddServlet.class.getName());
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse res)
-            throws ServletException, IOException {
+            throws IOException {
         try{
             List<HashMap<String, Object>> reservationsDetails;
             String userSessionId = req.getRequestedSessionId();
@@ -39,7 +35,7 @@ public class ReservationViewServlet extends HttpServlet {
 
                     if(!csrfToken.equals(requestedCsrfToken)) {
                         req.setAttribute("msg", "error");
-                        req.getRequestDispatcher(reservationActionPage)
+                        req.getRequestDispatcher(Pages.reservationAction)
                                 .forward(req, res);
                         return;
                     }
@@ -54,27 +50,27 @@ public class ReservationViewServlet extends HttpServlet {
                         if (!reservationsDetails.isEmpty()){
                             req.setAttribute("reservationsDetails", reservationsDetails);
                             req.setAttribute("csrfToken", csrfToken);
-                            req.getRequestDispatcher(reservationViewPage)
+                            req.getRequestDispatcher(Pages.reservationView)
                                     .forward(req, res);
                         } else {
                             req.setAttribute("msg", "empty");
-                            req.getRequestDispatcher(reservationActionPage)
+                            req.getRequestDispatcher(Pages.reservationAction)
                                     .forward(req, res);
                         }
                     } else {
                         req.setAttribute("msg", "error");
-                        req.getRequestDispatcher(reservationActionPage)
+                        req.getRequestDispatcher(Pages.reservationAction)
                                 .forward(req, res);
                     }
                 } else {
-                    res.sendRedirect(loginEndpoint);
+                    res.sendRedirect(Endpoint.login);
                 }
             } else {
-                res.sendRedirect(loginEndpoint);
+                res.sendRedirect(Endpoint.login);
             }
         } catch (ServletException | IOException ex){
             logger.log(Level.SEVERE, "An error occurred: " + ex.getMessage(), ex);
-            res.sendRedirect(rootPath);
+            res.sendRedirect(Endpoint.root);
         }
     }
 }

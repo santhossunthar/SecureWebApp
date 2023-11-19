@@ -14,15 +14,11 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 public class ReservationDeleteServlet extends HttpServlet {
-    private final String reservationActionPage = Pages.reservationAction;
-    private final String rootPath = Endpoint.root;
-    private final String loginEndpoint = Endpoint.login;
-    private final String reservationEndpoint = Endpoint.reservation;
     private static final Logger logger = Logger.getLogger(ReservationDeleteServlet.class.getName());
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse res)
-            throws ServletException, IOException {
+            throws IOException {
         try {
             String userSessionId = req.getRequestedSessionId();
 
@@ -36,32 +32,31 @@ public class ReservationDeleteServlet extends HttpServlet {
 
                     if(!csrfToken.equals(requestedCsrfToken)) {
                         req.setAttribute("msg", "error");
-                        req.getRequestDispatcher(reservationActionPage)
+                        req.getRequestDispatcher(Pages.reservationAction)
                                 .forward(req, res);
                         return;
                     }
 
                     String bookingId = req.getParameter("bid");
-
                     ReservationRepository reservationRepository = new ReservationRepository();
                     boolean result = reservationRepository.deleteReservationDetailsById(bookingId, userId);
 
                     if(!result){
                         req.setAttribute("msg", "error");
-                        req.getRequestDispatcher(reservationActionPage)
+                        req.getRequestDispatcher(Pages.reservationAction)
                                 .forward(req, res);
                     }
 
-                    res.sendRedirect(reservationEndpoint);
+                    res.sendRedirect(Endpoint.reservation);
                 } else {
-                    res.sendRedirect(loginEndpoint);
+                    res.sendRedirect(Endpoint.login);
                 }
             } else {
-                res.sendRedirect(loginEndpoint);
+                res.sendRedirect(Endpoint.login);
             }
         } catch (ServletException | IOException ex){
             logger.log(Level.SEVERE, "An error occurred: " + ex.getMessage(), ex);
-            res.sendRedirect(rootPath);
+            res.sendRedirect(Endpoint.root);
         }
     }
 }
