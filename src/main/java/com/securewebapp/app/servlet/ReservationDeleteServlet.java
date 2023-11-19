@@ -10,49 +10,58 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 public class ReservationDeleteServlet extends HttpServlet {
     private final String reservationActionPage = Pages.reservationAction;
+    private final String rootPath = Endpoint.root;
     private final String loginEndpoint = Endpoint.login;
     private final String reservationEndpoint = Endpoint.reservation;
+    private static final Logger logger = Logger.getLogger(ReservationDeleteServlet.class.getName());
 
     @Override
-    protected void doPost(HttpServletRequest req, HttpServletResponse resp)
+    protected void doPost(HttpServletRequest req, HttpServletResponse res)
             throws ServletException, IOException {
-        String userSessionId = req.getRequestedSessionId();
+        try {
+            String userSessionId = req.getRequestedSessionId();
 
-        if(userSessionId != null){
-            HttpSession session = req.getSession(false);
+            if(userSessionId != null){
+                HttpSession session = req.getSession(false);
 
-            if (session != null) {
-                String userId = (String) session.getAttribute("userId");
-                String csrfToken = (String) session.getAttribute("csrfToken");
-                String requestedCsrfToken = req.getParameter("token");
+                if (session != null) {
+                    String userId = (String) session.getAttribute("userId");
+                    String csrfToken = (String) session.getAttribute("csrfToken");
+                    String requestedCsrfToken = req.getParameter("token");
 
-                if(!csrfToken.equals(requestedCsrfToken)) {
-                    req.setAttribute("msg", "error");
-                    req.getRequestDispatcher(reservationActionPage)
-                            .forward(req, resp);
-                    return;
+                    if(!csrfToken.equals(requestedCsrfToken)) {
+                        req.setAttribute("msg", "error");
+                        req.getRequestDispatcher(reservationActionPage)
+                                .forward(req, res);
+                        return;
+                    }
+
+                    String bookingId = req.getParameter("bid");
+
+                    ReservationRepository reservationRepository = new ReservationRepository();
+                    boolean result = reservationRepository.deleteReservationDetailsById(bookingId, userId);
+
+                    if(!result){
+                        req.setAttribute("msg", "error");
+                        req.getRequestDispatcher(reservationActionPage)
+                                .forward(req, res);
+                    }
+
+                    res.sendRedirect(reservationEndpoint);
+                } else {
+                    res.sendRedirect(loginEndpoint);
                 }
-
-                String bookingId = req.getParameter("bid");
-
-                ReservationRepository reservationRepository = new ReservationRepository();
-                boolean result = reservationRepository.deleteReservationDetailsById(bookingId, userId);
-
-                if(!result){
-                    req.setAttribute("msg", "error");
-                    req.getRequestDispatcher(reservationActionPage)
-                            .forward(req, resp);
-                }
-
-                resp.sendRedirect(reservationEndpoint);
             } else {
-                resp.sendRedirect(loginEndpoint);
+                res.sendRedirect(loginEndpoint);
             }
-        } else {
-            resp.sendRedirect(loginEndpoint);
+        } catch (ServletException | IOException ex){
+            logger.log(Level.SEVERE, "An error occurred: " + ex.getMessage(), ex);
+            res.sendRedirect(rootPath);
         }
     }
 }

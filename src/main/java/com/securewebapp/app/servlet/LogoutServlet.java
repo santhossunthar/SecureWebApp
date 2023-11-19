@@ -1,5 +1,7 @@
 package com.securewebapp.app.servlet;
 
+import com.auth0.IdentityVerificationException;
+import com.securewebapp.app.api.Endpoint;
 import com.securewebapp.app.auth.AuthConfig;
 
 import javax.servlet.ServletException;
@@ -7,16 +9,25 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 public class LogoutServlet extends HttpServlet {
     private AuthConfig config;
+    private final String rootPath = Endpoint.root;
+    private static final Logger logger = Logger.getLogger(CallbackServlet.class.getName());
 
     @Override
     protected void doGet(
-            final HttpServletRequest request,
-            final HttpServletResponse response) throws ServletException, IOException {
-        clearSession(request);
-        response.sendRedirect(getLogoutUrl(request));
+            final HttpServletRequest req,
+            final HttpServletResponse res) throws ServletException, IOException {
+        try{
+            clearSession(req);
+            res.sendRedirect(getLogoutUrl(req));
+        } catch (IOException ex) {
+            logger.log(Level.SEVERE, "An error occurred: " + ex.getMessage(), ex);
+            res.sendRedirect(rootPath);
+        }
     }
 
     private void clearSession(HttpServletRequest request) {

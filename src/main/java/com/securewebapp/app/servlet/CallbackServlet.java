@@ -11,11 +11,14 @@ import com.securewebapp.app.helper.CSRFTokenGenerator;
 import javax.servlet.ServletException;
 import javax.servlet.http.*;
 import java.io.IOException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 public class CallbackServlet extends HttpServlet {
     private AuthenticationController authenticationController;
     private final String loginEndpoint = Endpoint.login;
     private final String reservationEndpoint = Endpoint.reservation;
+    private static final Logger logger = Logger.getLogger(CallbackServlet.class.getName());
 
     @Override
     public void init() throws ServletException {
@@ -25,19 +28,16 @@ public class CallbackServlet extends HttpServlet {
     }
 
     @Override
-    public void doGet(HttpServletRequest req, HttpServletResponse res)
-            throws IOException, ServletException {
+    public void doGet(HttpServletRequest req, HttpServletResponse res) throws IOException, ServletException {
         handle(req, res);
     }
 
     @Override
-    public void doPost(HttpServletRequest req, HttpServletResponse res)
-            throws IOException, ServletException {
+    public void doPost(HttpServletRequest req, HttpServletResponse res) throws IOException, ServletException {
         handle(req, res);
     }
 
-    private void handle(HttpServletRequest req, HttpServletResponse res)
-            throws IOException {
+    private void handle(HttpServletRequest req, HttpServletResponse res) throws IOException {
         try {
             Tokens tokens = authenticationController.handle(req, res);
             SessionUtils.set(req, "accessToken", tokens.getAccessToken());
@@ -51,9 +51,9 @@ public class CallbackServlet extends HttpServlet {
             SessionUtils.set(req, "csrfToken", csrfTokenGenerator.generate());
 
             res.sendRedirect(reservationEndpoint);
-        } catch (IdentityVerificationException e) {
+        } catch (IdentityVerificationException | IOException ex) {
+            logger.log(Level.SEVERE, "An error occurred: " + ex.getMessage(), ex);
             res.sendRedirect(loginEndpoint);
         }
     }
-
 }
