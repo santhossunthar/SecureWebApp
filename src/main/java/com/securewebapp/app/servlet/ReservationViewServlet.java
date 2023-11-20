@@ -16,7 +16,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 public class ReservationViewServlet extends HttpServlet {
-    private static final Logger logger = Logger.getLogger(ReservationAddServlet.class.getName());
+    private static final Logger logger = Logger.getLogger(ReservationViewServlet.class.getName());
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse res)
@@ -44,7 +44,7 @@ public class ReservationViewServlet extends HttpServlet {
 
                     ReservationRepository reservationRepository = new ReservationRepository();
                     reservationsDetails = reservationRepository
-                            .getReservationsDetails(userId, bookingId);
+                            .getReservationDetails(userId, bookingId);
 
                     if(reservationsDetails != null){
                         if (!reservationsDetails.isEmpty()){

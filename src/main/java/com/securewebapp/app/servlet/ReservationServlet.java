@@ -13,7 +13,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 public class ReservationServlet extends HttpServlet {
-    private static final Logger logger = Logger.getLogger(ReservationAddServlet.class.getName());
+    private static final Logger logger = Logger.getLogger(ReservationServlet.class.getName());
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse res)

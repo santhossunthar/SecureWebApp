@@ -11,7 +11,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 public class LogoutServlet extends HttpServlet {
-    private static final Logger logger = Logger.getLogger(CallbackServlet.class.getName());
+    private static final Logger logger = Logger.getLogger(LogoutServlet.class.getName());
 
     @Override
     protected void doGet(

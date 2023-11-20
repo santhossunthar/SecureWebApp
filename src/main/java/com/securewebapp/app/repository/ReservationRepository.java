@@ -41,7 +41,7 @@ public class ReservationRepository implements IReservationRepository {
     }
 
     @Override
-    public List<HashMap<String, Object>> getReservationsDetails(String userId, String bookingId) {
+    public List<HashMap<String, Object>> getReservationDetails(String userId, String bookingId) {
         try {
             Connection conn =  MySqlConn.connect();
 
