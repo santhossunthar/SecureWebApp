@@ -2,6 +2,7 @@ package com.securewebapp.app.servlet;
 
 import com.securewebapp.app.api.Endpoint;
 import com.securewebapp.app.api.Pages;
+import com.securewebapp.app.helper.InputValidator;
 import com.securewebapp.app.repository.ReservationRepository;
 
 import javax.servlet.ServletException;
@@ -38,16 +39,23 @@ public class ReservationDeleteServlet extends HttpServlet {
                     }
 
                     String bookingId = req.getParameter("bid");
-                    ReservationRepository reservationRepository = new ReservationRepository();
-                    boolean result = reservationRepository.deleteReservationDetailsById(bookingId, userId);
 
-                    if(!result){
+                    if(bookingId != null && InputValidator.isNumeric(bookingId)){
+                        ReservationRepository reservationRepository = new ReservationRepository();
+                        boolean result = reservationRepository.deleteReservationDetailsById(bookingId, userId);
+
+                        if(!result){
+                            req.setAttribute("msg", "error");
+                            req.getRequestDispatcher(Pages.reservationAction)
+                                    .forward(req, res);
+                        }
+
+                        res.sendRedirect(Endpoint.reservation);
+                    } else {
                         req.setAttribute("msg", "error");
                         req.getRequestDispatcher(Pages.reservationAction)
                                 .forward(req, res);
                     }
-
-                    res.sendRedirect(Endpoint.reservation);
                 } else {
                     res.sendRedirect(Endpoint.login);
                 }

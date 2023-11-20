@@ -2,6 +2,7 @@ package com.securewebapp.app.servlet;
 
 import com.securewebapp.app.api.Endpoint;
 import com.securewebapp.app.api.Pages;
+import com.securewebapp.app.helper.InputValidator;
 import com.securewebapp.app.repository.ReservationRepository;
 
 import javax.servlet.ServletException;
@@ -20,10 +21,10 @@ public class ReservationViewServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse res)
             throws IOException {
-        try{
+        try {
             String userSessionId = req.getRequestedSessionId();
 
-            if(userSessionId != null){
+            if (userSessionId != null) {
                 HttpSession session = req.getSession(false);
 
                 if (session != null) {
@@ -31,7 +32,7 @@ public class ReservationViewServlet extends HttpServlet {
                     String csrfToken = (String) session.getAttribute("csrfToken");
                     String requestedCsrfToken = req.getParameter("token");
 
-                    if(!csrfToken.equals(requestedCsrfToken)) {
+                    if (!csrfToken.equals(requestedCsrfToken)) {
                         req.setAttribute("msg", "error");
                         req.getRequestDispatcher(Pages.reservationAction)
                                 .forward(req, res);
@@ -39,19 +40,26 @@ public class ReservationViewServlet extends HttpServlet {
                     }
 
                     String bookingId = req.getParameter("bid");
-                    HashMap<String, Object> reservationDetails;
-                    ReservationRepository reservationRepository = new ReservationRepository();
-                    reservationDetails = reservationRepository
-                            .getReservationDetails(userId, bookingId);
 
-                    if(reservationDetails != null){
-                        if (!reservationDetails.isEmpty()){
-                            req.setAttribute("reservationsDetails", reservationDetails);
-                            req.setAttribute("csrfToken", csrfToken);
-                            req.getRequestDispatcher(Pages.reservationView)
-                                    .forward(req, res);
+                    if (bookingId != null && InputValidator.isNumeric(bookingId)) {
+                        HashMap<String, Object> reservationDetails;
+                        ReservationRepository reservationRepository = new ReservationRepository();
+                        reservationDetails = reservationRepository
+                                .getReservationDetails(userId, bookingId);
+
+                        if (reservationDetails != null) {
+                            if (!reservationDetails.isEmpty()) {
+                                req.setAttribute("reservationsDetails", reservationDetails);
+                                req.setAttribute("csrfToken", csrfToken);
+                                req.getRequestDispatcher(Pages.reservationView)
+                                        .forward(req, res);
+                            } else {
+                                req.setAttribute("msg", "empty");
+                                req.getRequestDispatcher(Pages.reservationAction)
+                                        .forward(req, res);
+                            }
                         } else {
-                            req.setAttribute("msg", "empty");
+                            req.setAttribute("msg", "error");
                             req.getRequestDispatcher(Pages.reservationAction)
                                     .forward(req, res);
                         }
@@ -66,7 +74,7 @@ public class ReservationViewServlet extends HttpServlet {
             } else {
                 res.sendRedirect(Endpoint.login);
             }
-        } catch (ServletException | IOException ex){
+        } catch (ServletException | IOException ex) {
             logger.log(Level.SEVERE, "An error occurred: " + ex.getMessage(), ex);
             res.sendRedirect(Endpoint.root);
         }
