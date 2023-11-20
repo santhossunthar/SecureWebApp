@@ -10,8 +10,11 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 public class ReservationRepository implements IReservationRepository {
+    private static final Logger logger = Logger.getLogger(ReservationRepository.class.getName());
 
     public List<HashMap<String, Object>> getReservationsDetails(String userId){
         try {
@@ -23,52 +26,55 @@ public class ReservationRepository implements IReservationRepository {
                 preparedStatement.setString(1, userId);
                 ResultSet resultSet = preparedStatement.executeQuery();
 
-                List<HashMap<String, Object>> dataList = new ArrayList<>();
+                List<HashMap<String, Object>> reservationDataList = new ArrayList<>();
                 while (resultSet.next()) {
-                    HashMap data = new HashMap();
-                    data.put("bookingId", resultSet.getInt("booking_id"));
-                    data.put("date", resultSet.getString("date"));
-                    data.put("time", resultSet.getString("time"));
-                    data.put("location", resultSet.getString("location"));
-                    dataList.add(data);
+                    HashMap<String, Object> reservationData = new HashMap<>();
+                    reservationData.put("bookingId", resultSet.getInt("booking_id"));
+                    reservationData.put("date", resultSet.getString("date"));
+                    reservationData.put("time", resultSet.getString("time"));
+                    reservationData.put("location", resultSet.getString("location"));
+                    reservationDataList.add(reservationData);
                 }
-                return dataList;
+
+                return reservationDataList;
             }
         }catch (SQLException ex){
-            System.out.println(ex);
+            logger.log(Level.SEVERE, "An error occurred: " + ex.getMessage(), ex);
         }
+
         return null;
     }
 
     @Override
-    public List<HashMap<String, Object>> getReservationDetails(String userId, String bookingId) {
+    public HashMap<String, Object> getReservationDetails(String userId, String bookingId) {
         try {
             Connection conn =  MySqlConn.connect();
 
             if(conn != null) {
-                String sql = "SELECT booking_id, date, time, location, vehicle_no, mileage, message FROM vehicle_service WHERE username=? AND booking_id=?";
+                String sql = "SELECT booking_id, date, time, location, vehicle_no, mileage, message " +
+                        "FROM vehicle_service WHERE username=? AND booking_id=?";
                 PreparedStatement preparedStatement = conn.prepareStatement(sql);
                 preparedStatement.setString(1, userId);
                 preparedStatement.setString(2, bookingId);
                 ResultSet resultSet = preparedStatement.executeQuery();
 
-                List<HashMap<String, Object>> dataList = new ArrayList<>();
+                HashMap<String, Object> reservationData = new HashMap<>();
                 while (resultSet.next()) {
-                    HashMap data = new HashMap();
-                    data.put("bookingId", resultSet.getInt("booking_id"));
-                    data.put("date", resultSet.getString("date"));
-                    data.put("time", resultSet.getString("time"));
-                    data.put("location", resultSet.getString("location"));
-                    data.put("vehicleNo", resultSet.getString("vehicle_no"));
-                    data.put("mileage", resultSet.getString("mileage"));
-                    data.put("message", resultSet.getString("message"));
-                    dataList.add(data);
+                    reservationData.put("bookingId", resultSet.getInt("booking_id"));
+                    reservationData.put("date", resultSet.getString("date"));
+                    reservationData.put("time", resultSet.getString("time"));
+                    reservationData.put("location", resultSet.getString("location"));
+                    reservationData.put("vehicleNo", resultSet.getString("vehicle_no"));
+                    reservationData.put("mileage", resultSet.getString("mileage"));
+                    reservationData.put("message", resultSet.getString("message"));
                 }
-                return dataList;
+
+                return reservationData;
             }
         }catch (SQLException ex){
-            System.out.println(ex);
+            logger.log(Level.SEVERE, "An error occurred: " + ex.getMessage(), ex);
         }
+
         return null;
     }
 
@@ -91,19 +97,17 @@ public class ReservationRepository implements IReservationRepository {
                 int rowsInserted = preparedStatement.executeUpdate();
 
                 boolean response;
-                if (rowsInserted > 0) {
-                    response = true;
-                } else {
-                    response = false;
-                }
+                response = rowsInserted > 0;
 
                 preparedStatement.close();
                 conn.close();
+
                 return response;
             }
         } catch (SQLException ex){
-            System.out.println(ex);
+            logger.log(Level.SEVERE, "An error occurred: " + ex.getMessage(), ex);
         }
+
         return false;
     }
 
@@ -117,11 +121,13 @@ public class ReservationRepository implements IReservationRepository {
                 preparedStatement.setString(1, userId);
                 preparedStatement.setString(2, bookingId);
                 preparedStatement.executeUpdate();
+
                 return true;
             }
         } catch (SQLException ex){
-            System.out.println(ex);
+            logger.log(Level.SEVERE, "An error occurred: " + ex.getMessage(), ex);
         }
+
         return false;
     }
 }

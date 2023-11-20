@@ -11,7 +11,6 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.util.HashMap;
-import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -22,7 +21,6 @@ public class ReservationViewServlet extends HttpServlet {
     protected void doPost(HttpServletRequest req, HttpServletResponse res)
             throws IOException {
         try{
-            List<HashMap<String, Object>> reservationsDetails;
             String userSessionId = req.getRequestedSessionId();
 
             if(userSessionId != null){
@@ -41,14 +39,14 @@ public class ReservationViewServlet extends HttpServlet {
                     }
 
                     String bookingId = req.getParameter("bid");
-
+                    HashMap<String, Object> reservationDetails;
                     ReservationRepository reservationRepository = new ReservationRepository();
-                    reservationsDetails = reservationRepository
+                    reservationDetails = reservationRepository
                             .getReservationDetails(userId, bookingId);
 
-                    if(reservationsDetails != null){
-                        if (!reservationsDetails.isEmpty()){
-                            req.setAttribute("reservationsDetails", reservationsDetails);
+                    if(reservationDetails != null){
+                        if (!reservationDetails.isEmpty()){
+                            req.setAttribute("reservationsDetails", reservationDetails);
                             req.setAttribute("csrfToken", csrfToken);
                             req.getRequestDispatcher(Pages.reservationView)
                                     .forward(req, res);
