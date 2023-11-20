@@ -4,13 +4,15 @@ import com.mashape.unirest.http.HttpResponse;
 import com.mashape.unirest.http.JsonNode;
 import com.mashape.unirest.http.Unirest;
 import com.mashape.unirest.http.exceptions.UnirestException;
-import org.json.JSONArray;
 
 import java.io.IOException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 public class AuthUser {
-    private String accessToken;
-    private String domain;
+    private final String accessToken;
+    private final String domain;
+    private static final Logger logger = Logger.getLogger(AuthUser.class.getName());
 
     public AuthUser(String domain, String accessToken){
         this.domain = domain;
@@ -33,8 +35,8 @@ public class AuthUser {
             }
 
             Unirest.shutdown();
-        } catch (UnirestException ex){
-            throw new UnirestException(ex);
+        } catch (UnirestException | IOException ex){
+            logger.log(Level.SEVERE, "An error occurred: " + ex.getMessage(), ex);
         }
 
         return null;
