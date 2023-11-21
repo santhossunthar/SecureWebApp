@@ -120,7 +120,7 @@ public class ReservationAddServlet extends HttpServlet {
             } else {
                 res.sendRedirect(Endpoint.login);
             }
-        } catch (ServletException | IOException ex) {
+        } catch (ServletException | IOException | NullPointerException ex) {
             logger.log(Level.SEVERE, "An error occurred: " + ex.getMessage(), ex);
             res.sendRedirect(Endpoint.root);
         }
