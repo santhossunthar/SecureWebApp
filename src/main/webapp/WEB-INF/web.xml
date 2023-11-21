@@ -20,7 +20,15 @@
 
   <filter-mapping>
     <filter-name>RefererFilter</filter-name>
-    <url-pattern>/*</url-pattern>
+    <url-pattern>/reservation/*</url-pattern>
+  </filter-mapping>
+  <filter-mapping>
+    <filter-name>RefererFilter</filter-name>
+    <url-pattern>/profile</url-pattern>
+  </filter-mapping>
+  <filter-mapping>
+    <filter-name>RefererFilter</filter-name>
+    <url-pattern>/logout</url-pattern>
   </filter-mapping>
   <filter-mapping>
     <filter-name>CSPFilter</filter-name>
