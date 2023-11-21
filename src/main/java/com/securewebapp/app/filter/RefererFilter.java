@@ -22,14 +22,14 @@ public class RefererFilter implements Filter {
             throws IOException {
         try{
             HttpServletRequest request = (HttpServletRequest) req;
-            HttpServletResponse response = (HttpServletResponse) res;
             String referer = request.getHeader("Referer");
 
             if (referer != null) {
                 if (isValidReferer(referer)) {
                     chain.doFilter(req, res);
                 } else {
-                    response.sendError(HttpServletResponse.SC_FORBIDDEN, "Invalid Referer");
+                    logger.log(Level.WARNING, "An error occurred while validating referer header");
+                    ((HttpServletResponse) res).sendRedirect(Endpoint.root);
                 }
             } else {
                 chain.doFilter(req, res);

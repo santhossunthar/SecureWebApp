@@ -9,18 +9,19 @@ import java.io.IOException;
 
 public class CSPFilter implements Filter {
     @Override
-    public void init(FilterConfig filterConfig) throws ServletException {
+    public void init(FilterConfig filterConfig) {
     }
 
     @Override
     public void doFilter(ServletRequest req, ServletResponse res, FilterChain chain)
-            throws IOException, ServletException {
+            throws IOException {
         try {
             HttpServletRequest request = (HttpServletRequest) req;
             HttpServletResponse response = (HttpServletResponse) res;
 
             String POLICY = "default-src 'self'; img-src 'self' https://s.gravatar.com/avatar/ " +
-                    "https://cdn.auth0.com/avatars/ https://i1.wp.com/cdn.auth0.com/avatars;";
+                    "https://cdn.auth0.com/avatars/ https://i1.wp.com/cdn.auth0.com/avatars " +
+                    "https://lh3.googleusercontent.com;";
             response.setHeader("Content-Security-Policy", POLICY);
             chain.doFilter(request, response);
         } catch (ServletException | IOException ex) {

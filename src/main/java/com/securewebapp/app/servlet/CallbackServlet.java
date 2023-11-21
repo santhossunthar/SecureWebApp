@@ -14,8 +14,9 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 public class CallbackServlet extends HttpServlet {
+    private static final Logger logger = Logger.getLogger(AuthConfig.class.getName());
+
     private AuthenticationController authenticationController;
-    private static final Logger logger = Logger.getLogger(CallbackServlet.class.getName());
 
     @Override
     public void init() {

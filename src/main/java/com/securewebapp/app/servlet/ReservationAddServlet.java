@@ -55,7 +55,7 @@ public class ReservationAddServlet extends HttpServlet {
                     String userId = (String) session.getAttribute("userId");
                     String csrfToken = (String) session.getAttribute("csrfToken");
                     String requestedCsrfToken = req.getParameter("token");
-                    
+
                     if (!csrfToken.equals(requestedCsrfToken)) {
                         req.setAttribute("msg", "error");
                         req.getRequestDispatcher(Pages.reservationAction)
