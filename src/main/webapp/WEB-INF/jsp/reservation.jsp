@@ -58,8 +58,8 @@
                        %>
                        <tr>
                            <td><%= product.get("bookingId") %></td>
-                           <td><%= product.get("date") %></td>
-                           <td><%= product.get("time") %></td>
+                           <td><%= product.get("date").toString().replace("-", "/") %></td>
+                           <td><%= product.get("time").toString().replace("00:00:", "") %></td>
                            <td><%= product.get("location") %></td>
                            <td class="actions">
                                <form action="/reservation/view" method="POST">

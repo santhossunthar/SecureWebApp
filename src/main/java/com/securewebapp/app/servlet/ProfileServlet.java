@@ -26,7 +26,7 @@ public class ProfileServlet extends HttpServlet {
             if(userSessionId != null){
                 HttpSession session = req.getSession(false);
 
-                if (session != null) {
+                if (session != null && session.getId().equals(userSessionId)) {
                     String accessToken = (String) session.getAttribute("accessToken");
 
                     AuthConfig authConfig = new AuthConfig();

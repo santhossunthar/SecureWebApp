@@ -26,7 +26,7 @@ public class ReservationDeleteServlet extends HttpServlet {
             if(userSessionId != null){
                 HttpSession session = req.getSession(false);
 
-                if (session != null) {
+                if (session != null && session.getId().equals(userSessionId)) {
                     String userId = (String) session.getAttribute("userId");
                     String csrfToken = (String) session.getAttribute("csrfToken");
                     String requestedCsrfToken = req.getParameter("token");

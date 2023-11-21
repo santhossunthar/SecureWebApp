@@ -30,8 +30,8 @@ public class ReservationRepository implements IReservationRepository {
                 while (resultSet.next()) {
                     HashMap<String, Object> reservationData = new HashMap<>();
                     reservationData.put("bookingId", resultSet.getInt("booking_id"));
-                    reservationData.put("date", resultSet.getString("date"));
-                    reservationData.put("time", resultSet.getString("time"));
+                    reservationData.put("date", resultSet.getDate("date"));
+                    reservationData.put("time", resultSet.getTime("time"));
                     reservationData.put("location", resultSet.getString("location"));
                     reservationDataList.add(reservationData);
                 }
@@ -63,8 +63,8 @@ public class ReservationRepository implements IReservationRepository {
                 HashMap<String, Object> reservationData = new HashMap<>();
                 while (resultSet.next()) {
                     reservationData.put("bookingId", resultSet.getInt("booking_id"));
-                    reservationData.put("date", resultSet.getString("date"));
-                    reservationData.put("time", resultSet.getString("time"));
+                    reservationData.put("date", resultSet.getDate("date"));
+                    reservationData.put("time", resultSet.getTime("time"));
                     reservationData.put("location", resultSet.getString("location"));
                     reservationData.put("vehicleNo", resultSet.getString("vehicle_no"));
                     reservationData.put("mileage", resultSet.getString("mileage"));

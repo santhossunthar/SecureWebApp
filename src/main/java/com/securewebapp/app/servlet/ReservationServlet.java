@@ -25,7 +25,7 @@ public class ReservationServlet extends HttpServlet {
             if(userSessionId != null){
                 HttpSession session = req.getSession(false);
 
-                if (session != null) {
+                if (session != null && session.getId().equals(userSessionId)) {
                     String userId = (String) session.getAttribute("userId");
                     String csrfToken = (String) session.getAttribute("csrfToken");
 
@@ -55,7 +55,7 @@ public class ReservationServlet extends HttpServlet {
             } else {
                 res.sendRedirect(Endpoint.login);
             }
-        } catch (ServletException | IOException ex) {
+        } catch (ServletException | IOException | NullPointerException ex) {
             logger.log(Level.SEVERE, "An error occurred: " + ex.getMessage(), ex);
             res.sendRedirect(Endpoint.root);
         }
