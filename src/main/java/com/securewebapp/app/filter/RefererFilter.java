@@ -15,35 +15,35 @@ public class RefererFilter implements Filter {
     private static final Logger logger = Logger.getLogger(AuthConfig.class.getName());
 
     @Override
-    public void init(FilterConfig filterConfig) {}
+    public void init(FilterConfig filterConfig) {
+    }
 
     @Override
     public void doFilter(ServletRequest req, ServletResponse res, FilterChain chain)
             throws IOException {
-        try{
+        try {
             HttpServletRequest request = (HttpServletRequest) req;
             String referer = request.getHeader("Referer");
 
-            if (referer != null) {
-                if (isValidReferer(referer)) {
-                    chain.doFilter(req, res);
-                } else {
-                    logger.log(Level.WARNING, "An error occurred while validating referer header");
-                    ((HttpServletResponse) res).sendRedirect(Endpoint.root);
-                }
-            } else {
+            if (isValidReferer(request, referer)) {
                 chain.doFilter(req, res);
+            } else {
+                logger.log(Level.SEVERE, "An error occurred while validating referer header");
+                ((HttpServletResponse) res).sendRedirect(Endpoint.root);
             }
-        } catch (ServletException | IOException ex){
+        } catch (ServletException | IOException ex) {
             logger.log(Level.SEVERE, "An error occurred: " + ex.getMessage(), ex);
             ((HttpServletResponse) res).sendRedirect(Endpoint.root);
         }
     }
 
-    private boolean isValidReferer(String referer) {
-        return referer.startsWith(ApplicationURL.getURL());
+    private boolean isValidReferer(HttpServletRequest request, String referer) {
+        if (referer != null && referer.startsWith(ApplicationURL.getURL())) {
+            return true;
+        } else return request.getRequestURL().toString().startsWith(ApplicationURL.getURL());
     }
 
     @Override
-    public void destroy() {}
+    public void destroy() {
+    }
 }
