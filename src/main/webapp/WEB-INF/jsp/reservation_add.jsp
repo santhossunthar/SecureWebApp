@@ -13,7 +13,7 @@
     <nav>
         <div class="container">
             <div class="brand-logo">
-                VRS
+                VSR
             </div>
 
             <div class="nav-items">

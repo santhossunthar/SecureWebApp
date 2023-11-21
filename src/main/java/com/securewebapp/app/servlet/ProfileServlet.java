@@ -1,15 +1,16 @@
 package com.securewebapp.app.servlet;
 
-import com.mashape.unirest.http.JsonNode;
-import com.mashape.unirest.http.exceptions.UnirestException;
 import com.securewebapp.app.auth.AuthConfig;
 import com.securewebapp.app.auth.AuthUser;
 import com.securewebapp.app.api.Endpoint;
 import com.securewebapp.app.api.Pages;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.*;
 import java.io.IOException;
+import java.util.HashMap;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -30,7 +31,14 @@ public class ProfileServlet extends HttpServlet {
 
                     AuthConfig authConfig = new AuthConfig();
                     AuthUser authUser = new AuthUser(authConfig.getDomain(), accessToken);
-                    JsonNode userInfo = authUser.getInfo();
+                    JSONObject userInfoObject = authUser.getInfo();
+
+                    HashMap<String, Object> userInfo = new HashMap<>();
+                    userInfo.put("email", userInfoObject.get("email"));
+                    userInfo.put("emailVerification", userInfoObject.get("email_verified"));
+                    userInfo.put("picture", userInfoObject.get("picture"));
+                    userInfo.put("fullName", userInfoObject.get("nickname"));
+                    userInfo.put("name", userInfoObject.get("nickname"));
 
                     req.setAttribute("userInfo", userInfo);
                     req.getRequestDispatcher(Pages.userProfile)
@@ -41,7 +49,7 @@ public class ProfileServlet extends HttpServlet {
             } else {
                 res.sendRedirect(Endpoint.login);
             }
-        } catch (ServletException | IOException | UnirestException ex) {
+        } catch (ServletException | IOException | JSONException | NullPointerException ex) {
             logger.log(Level.SEVERE, "An error occurred: " + ex.getMessage(), ex);
             res.sendRedirect(Endpoint.root);
         }

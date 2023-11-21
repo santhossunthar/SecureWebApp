@@ -1,5 +1,5 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
-<%@ page import="com.mashape.unirest.http.JsonNode" %>
+<%@ page import="java.util.HashMap" %>
 <!DOCTYPE html>
 
 <head>
@@ -38,20 +38,20 @@
             <div class="profile-info">
                 <div class="header">
                     <%
-                       JsonNode userInfo = (JsonNode) request.getAttribute("userInfo");
+                       HashMap<String, Object> userInfo = (HashMap<String, Object>) request.getAttribute("userInfo");
                     %>
                     <div class="img">
-                        <% if(userInfo.getObject().get("picture") != null) { %>
-                        <img src="<%= userInfo.getObject().get("picture") %>" alt="image" width="200px" height="150px">
+                        <% if(userInfo.get("picture") != null) { %>
+                        <img src="<%= userInfo.get("picture") %>" alt="image" width="200px" height="150px">
                         <% } else { %>
                         <img src="/assets/images/user.png" alt="image" width="200px" height="150px">
                         <% } %>
                     </div>
 
                      <div class="email-info">
-                         <h2><%= userInfo.getObject().get("email") %></h2>
+                         <h2><%= userInfo.get("email") %></h2>
                          <h4>
-                            <% if((boolean) userInfo.getObject().get("email_verified")) { %>
+                            <% if((boolean) userInfo.get("emailVerification")) { %>
                             <h4>Email is verified!</h4>
                             <% } else { %>
                             <h4>Email is not verified!</h4>
@@ -62,9 +62,9 @@
 
                 <div class="content">
                     <div class="element title">Full Name:</div>
-                    <div class="element"><%= userInfo.getObject().get("nickname") %></div>
+                    <div class="element"><%= userInfo.get("fullName") %></div>
                     <div class="element title">Name:</div>
-                    <div class="element"><%= userInfo.getObject().get("name") %></div>
+                    <div class="element"><%= userInfo.get("name") %></div>
                     <div class="element title">Country:</div>
                     <div class="element"></div>
                     <div class="element title">Contact No:</div>

@@ -1,11 +1,13 @@
 package com.securewebapp.app.auth;
 
-import com.mashape.unirest.http.HttpResponse;
-import com.mashape.unirest.http.JsonNode;
-import com.mashape.unirest.http.Unirest;
-import com.mashape.unirest.http.exceptions.UnirestException;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.io.IOException;
+import java.net.URI;
+import java.net.http.HttpClient;
+import java.net.http.HttpRequest;
+import java.net.http.HttpResponse;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -18,24 +20,25 @@ public class AuthUser {
         this.domain = domain;
         this.accessToken = accessToken;
     }
-    public JsonNode getInfo() throws UnirestException, IOException {
+    public JSONObject getInfo() throws IOException {
         try {
             String userInfoUrl = "https://" + domain + "/userinfo";
 
-            HttpResponse<JsonNode> response = Unirest.get(userInfoUrl)
+            HttpClient httpClient = HttpClient.newHttpClient();
+            HttpRequest request = HttpRequest.newBuilder()
+                    .uri(URI.create(userInfoUrl))
                     .header("Authorization", "Bearer " + accessToken)
-                    .header("Accept", "application/json")
-                    .header("Content-Type", "application/json")
-                    .asJson();
+                    .build();
 
-            if (response.getStatus() == 200) {
-                return response.getBody();
+            HttpResponse<String> response = httpClient.send(request, HttpResponse.BodyHandlers.ofString());
+            JSONObject jsonObject = new JSONObject(response.body());
+
+            if (response.statusCode() == 200) {
+                return jsonObject;
             } else {
-                System.out.println("Error");
+                logger.log(Level.WARNING, "An error occurred while retrieving user profile details");
             }
-
-            Unirest.shutdown();
-        } catch (UnirestException | IOException ex){
+        } catch (InterruptedException | JSONException ex){
             logger.log(Level.SEVERE, "An error occurred: " + ex.getMessage(), ex);
         }
 

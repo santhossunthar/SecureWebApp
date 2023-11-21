@@ -35,6 +35,8 @@ public class ReservationRepository implements IReservationRepository {
                     reservationData.put("location", resultSet.getString("location"));
                     reservationDataList.add(reservationData);
                 }
+                preparedStatement.close();
+                conn.close();
 
                 return reservationDataList;
             }
@@ -68,6 +70,8 @@ public class ReservationRepository implements IReservationRepository {
                     reservationData.put("mileage", resultSet.getString("mileage"));
                     reservationData.put("message", resultSet.getString("message"));
                 }
+                preparedStatement.close();
+                conn.close();
 
                 return reservationData;
             }
@@ -95,10 +99,8 @@ public class ReservationRepository implements IReservationRepository {
                 preparedStatement.setString(7, reservationData.get("userName"));
 
                 int rowsInserted = preparedStatement.executeUpdate();
-
                 boolean response;
                 response = rowsInserted > 0;
-
                 preparedStatement.close();
                 conn.close();
 
@@ -121,6 +123,8 @@ public class ReservationRepository implements IReservationRepository {
                 preparedStatement.setString(1, userId);
                 preparedStatement.setString(2, bookingId);
                 preparedStatement.executeUpdate();
+                preparedStatement.close();
+                conn.close();
 
                 return true;
             }
