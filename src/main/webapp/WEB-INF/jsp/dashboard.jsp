@@ -20,18 +20,18 @@
             </div>
 
             <div class="nav-items">
-                <div id="profile-icon">
-                    <img src="/assets/images/user.png" alt="user-icon" width="20px" height="20px">
-                </div>
+                <ul class="nav-items-list">
+                    <a href="/dashboard">
+                        <li class="list-item">Dashboard</li>
+                    </a>
+                    <a href="/profile">
+                        <li class="list-item">Profile</li>
+                    </a>
+                    <a href="/logout">
+                        <li class="list-item">Logout</li>
+                    </a>
+                </ul>
             </div>
-        </div>
-
-        <div id="nav-items-list">
-            <ul>
-                <li><a href="/dashboard">Dashboard</a></li>
-                <li><a href="/profile">Profile</a></li>
-                <li><a href="/logout">Logout</a></li>
-            </ul>
         </div>
     </nav>
 
@@ -40,7 +40,7 @@
             <div class="reservations">
                 <div class="header">
                     <h1>Reservations</h1>
-                    <a href="/reservation"><button>ADD</button></a>
+                    <a href="/reservation"><button class="btn">ADD</button></a>
                 </div>
                 <table>
                     <thead>
@@ -49,31 +49,27 @@
                             <th>Date</th>
                             <th>Time</th>
                             <th>Location</th>
-                            <th>Vehicle No</th>
-                            <th>Mileage</th>
                             <th>Actions</th>
                         </tr>
                     </thead>
                     <tbody>
-                        <%
-                           List<HashMap<String, Object>> productList = (List<HashMap<String, Object>>) request.getAttribute("reservationsDetails");
-                           for (HashMap<String, Object> product : productList) {
-                        %>
-                                <tr>
-                                    <td><%= product.get("bookingId") %></td>
-                                    <td><%= product.get("date") %></td>
-                                    <td><%= product.get("time") %></td>
-                                    <td><%= product.get("location") %></td>
-                                    <td><%= product.get("vehicleNo") %></td>
-                                    <td><%= product.get("mileage") %></td>
-                                    <td class="actions">
-                                        <button class="btn-action-view">View</button>
-                                        <button class="btn-action-delete">Delete</button>
-                                    </td>
-                                </tr>
-                                <%
-                                    }
-                                %>
+                       <%
+                         List<HashMap<String, Object>> productList = (List<HashMap<String, Object>>) request.getAttribute("reservationsDetails");
+                         for (HashMap<String, Object> product : productList) {
+                       %>
+                       <tr>
+                           <td><%= product.get("bookingId") %></td>
+                           <td><%= product.get("date") %></td>
+                           <td><%= product.get("time") %></td>
+                           <td><%= product.get("location") %></td>
+                           <td class="actions">
+                               <button class="btn-action-view">View</button>
+                               <button class="btn-action-delete">Delete</button>
+                            </td>
+                        </tr>
+                       <%
+                         }
+                       %>
                     </tbody>
                 </table>
             </div>

@@ -1,9 +1,9 @@
 :root {
-    --primary: #000;
+    --primary: rgb(81, 93, 97);
     --secondary: #fff;
-    --alert: #ddd;
-
-    --primary-hover: #eee;
+    --primary-hover: rgb(128, 154, 163);
+    --nav-list-item: rgb(81, 93, 97);
+    --nav-list-item-hover: rgb(95, 113, 119);
 }
 
 * {
@@ -37,6 +37,19 @@ nav > .container > .brand-logo {
     color: var(--secondary);
 }
 
+.btn {
+    border: none;
+    background-color: var(--primary);
+    color: var(--secondary);
+    transition: 0.7s;
+    cursor: pointer;
+}
+
+.btn:hover {
+    background-color: var(--primary-hover);
+    color: var(--secondary);
+}
+
 .nav-items {
     height: 3.5rem;
     display: flex;
@@ -44,42 +57,26 @@ nav > .container > .brand-logo {
     align-items: center;
 }
 
-.nav-items > #profile-icon {
-    position: absolute;
-    background-color: red;
-    z-index: 999;
-}
-
-.nav-items > #profile-icon > img {
-    position:relative;
-    z-index: 99;
-    border-radius: 50%;
-    transition: 0.7s;
-}
-
-.nav-items > #profile-icon > img:hover {
-    background-color: var(--primary-hover);
-}
-
-#nav-items-list {
-    display: none;
-    position: absolute;
-    width: 8rem;
-    left: 70%;
-}
-
-#nav-items-list > ul {
+.nav-items > .nav-items-list {
     list-style-type: none;
-    padding: .5rem;
+    display: flex;
+    gap: 1rem;
 }
 
-#nav-items-list > ul > li {
-    padding: .8rem;
-    background-color: gray;
+.nav-items-list a {
+    text-decoration: none;
+    color: #fff;
 }
 
-#nav-items-list > h2 {
-    position: relative;
+.nav-items-list .list-item {
+    background-color: var(--nav-list-item);
+    padding: .6rem;
+    border-radius: .5rem;
+    transition: .7s;
+}
+
+.nav-items-list .list-item:hover {
+    background-color: var(--nav-list-item-hover);
 }
 
 #content > .container {
@@ -115,15 +112,6 @@ nav > .container > .brand-logo {
 
 .login-form > .body > button {
     padding: 1rem 3rem;
-    border: none;
-    background-color: var(--primary);
-    color: var(--secondary);
-    transition: 0.7s;
-}
-
-.login-form > .body > button:hover {
-    background-color: var(--alert);
-    color: var(--secondary);
 }
 
 #user-profile > .container {
@@ -244,18 +232,46 @@ nav > .container > .brand-logo {
     border: none;
 }
 
-.reservations .btn-action-view {
-    background-color: lightblue;
-    border: none;
+.reservations .action-view {
     padding: .5rem 1rem;
-    cursor: pointer;
 }
 
-.reservations .btn-action-delete {
-    background-color: red;
-    border: none;
+.reservations .action-delete {
+    background-color: rgb(190, 10, 10);
     padding: .5rem 1rem;
-    cursor: pointer;
+}
+
+.reservations .action-delete:hover {
+    background-color: rgb(223, 39, 39);
+}
+
+#msg-container > .container {
+    width: 100%;
+    height: 80vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 1.5rem;
+}
+
+.msg-body {
+    background-color: aliceblue;
+    width: 60%;
+    height: 50%;
+    display: flex;
+    flex-direction: column;
+    padding: 1.5rem;
+    justify-content: center;
+    align-items: center;
+}
+
+.msg-body h1 {
+    text-transform: uppercase;
+}
+
+.msg-body button {
+    padding: .8rem 1rem;
+    margin: 2rem 1rem 0;
 }
 
 table {
@@ -269,7 +285,6 @@ table {
 }
 
 thead, tbody {
-    display: table;
     width: 100%;
 }
 

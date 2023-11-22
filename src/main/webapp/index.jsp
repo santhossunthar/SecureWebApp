@@ -26,17 +26,15 @@
         </nav>
     </header>
 
-    <section id="content">
+    <section id="msg-container">
         <div class="container">
-            <div class="login-form">
-                <div class="header">
-                    Welcome to Vechile Service Reservation!
+            <div class="msg-body">
+                <div class="title">
+                    <h1>Welcome to Vehicle Service Reservation!</h1>
                 </div>
 
-                <div class="body">
-                    <a href="https://dev-q4sknn3f2n0c67zb.us.auth0.com/authorize?response_type=code&scope=openid%20profile&client_id=0v0Qb81hBN2hKC4EaOzr11WIq3hUGNB7&redirect_uri=http://localhost:8080/callback&state=some-state&nonce=some-nonce">
-                            Login to the System!
-                    </a>
+                <div class="btn-group">
+                    <a href="/login"><button class="btn">Login</button></a>
                 </div>
             </div>
         </div>
