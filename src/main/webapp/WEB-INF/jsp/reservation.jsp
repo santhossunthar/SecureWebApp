@@ -1,6 +1,8 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ page import="java.util.HashMap" %>
 <%@ page import="java.util.List" %>
+<%@ page import="java.sql.*" %>
+<%@ page import="java.time.LocalTime" %>
 <!DOCTYPE html>
 
 <head>
@@ -53,23 +55,23 @@
                     </thead>
                     <tbody>
                        <%
-                         List<HashMap<String, Object>> productList = (List<HashMap<String, Object>>) request.getAttribute("reservationsDetails");
-                         for (HashMap<String, Object> product : productList) {
+                         List<HashMap<String, Object>> reservationsList = (List<HashMap<String, Object>>) request.getAttribute("reservationsDetails");
+                         for (HashMap<String, Object> reservation : reservationsList) {
                        %>
                        <tr>
-                           <td><%= product.get("bookingId") %></td>
-                           <td><%= product.get("date").toString().replace("-", "/") %></td>
-                           <td><%= product.get("time").toString().replace("00:00:", "") %></td>
-                           <td><%= product.get("location") %></td>
+                           <td><%= reservation.get("bookingId").toString() %></td>
+                           <td><%= reservation.get("date").toString().replace("-", "/") %></td>
+                           <td><%= reservation.get("time").toString() %></td>
+                           <td><%= reservation.get("location").toString() %></td>
                            <td class="actions">
                                <form action="/reservation/view" method="POST">
-                                  <input type="hidden" name="bid" value="<%= (int) product.get("bookingId") %>"/>
+                                  <input type="hidden" name="bid" value="<%= (int) reservation.get("bookingId") %>"/>
                                   <input type="hidden" name="token" value="<%= (String) request.getAttribute("csrfToken") %>"/>
                                   <button class="btn action-view" type="submit">View</button>
                                </form>
 
                                <form action="/reservation/delete" method="POST">
-                                 <input type="hidden" name="bid" value="<%= (int) product.get("bookingId") %>"/>
+                                 <input type="hidden" name="bid" value="<%= (int) reservation.get("bookingId") %>"/>
                                  <input type="hidden" name="token" value="<%= (String) request.getAttribute("csrfToken") %>"/>
                                  <button class="btn action-delete" type="submit">Delete</button>
                                </form>
@@ -90,7 +92,6 @@
         </div>
     </footer>
 
-    <script src="/assets/js/main.js"></script>
 </body>
 
 </html>

@@ -3,11 +3,11 @@ package com.securewebapp.app.repository;
 import com.securewebapp.app.connection.MySqlConn;
 import com.securewebapp.app.repository.impl.IReservationRepository;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.*;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.logging.Level;
@@ -31,7 +31,8 @@ public class ReservationRepository implements IReservationRepository {
                     HashMap<String, Object> reservationData = new HashMap<>();
                     reservationData.put("bookingId", resultSet.getInt("booking_id"));
                     reservationData.put("date", resultSet.getDate("date"));
-                    reservationData.put("time", resultSet.getTime("time"));
+                    reservationData.put("time", resultSet.getTime("time").toLocalTime()
+                            .format(java.time.format.DateTimeFormatter.ofPattern("hh a")));
                     reservationData.put("location", resultSet.getString("location"));
                     reservationDataList.add(reservationData);
                 }
@@ -64,10 +65,11 @@ public class ReservationRepository implements IReservationRepository {
                 while (resultSet.next()) {
                     reservationData.put("bookingId", resultSet.getInt("booking_id"));
                     reservationData.put("date", resultSet.getDate("date"));
-                    reservationData.put("time", resultSet.getTime("time"));
+                    reservationData.put("time", resultSet.getTime("time").toLocalTime()
+                            .format(java.time.format.DateTimeFormatter.ofPattern("hh a")));
                     reservationData.put("location", resultSet.getString("location"));
                     reservationData.put("vehicleNo", resultSet.getString("vehicle_no"));
-                    reservationData.put("mileage", resultSet.getString("mileage"));
+                    reservationData.put("mileage", resultSet.getInt("mileage"));
                     reservationData.put("message", resultSet.getString("message"));
                 }
                 preparedStatement.close();
@@ -90,11 +92,18 @@ public class ReservationRepository implements IReservationRepository {
                 String sql = "INSERT INTO vehicle_service(" +
                         "date, time, location, vehicle_no, mileage, message, username) VALUES(?, ?, ?, ?, ?, ?, ?)";
                 PreparedStatement preparedStatement = conn.prepareStatement(sql);
+
+                SimpleDateFormat simpleTimeFormat = new SimpleDateFormat("HH");
+                Date formattedTime = simpleTimeFormat.parse(reservationData.get("reservationTime"));
+                Time reservationTime = new Time(formattedTime.getTime());
+
+                int reservationMileage = Integer.parseInt(reservationData.get("reservationMileage"));
+
                 preparedStatement.setString(1, reservationData.get("reservationDate"));
-                preparedStatement.setString(2, reservationData.get("reservationTime"));
+                preparedStatement.setTime(2, reservationTime);
                 preparedStatement.setString(3, reservationData.get("reservationLocation"));
                 preparedStatement.setString(4, reservationData.get("reservationVehicleNo"));
-                preparedStatement.setString(5, reservationData.get("reservationMileage"));
+                preparedStatement.setInt(5, reservationMileage);
                 preparedStatement.setString(6, reservationData.get("reservationMessage"));
                 preparedStatement.setString(7, reservationData.get("userName"));
 
@@ -106,7 +115,7 @@ public class ReservationRepository implements IReservationRepository {
 
                 return response;
             }
-        } catch (SQLException ex){
+        } catch (SQLException | ParseException ex){
             logger.log(Level.SEVERE, "An error occurred: " + ex.getMessage(), ex);
         }
 

@@ -229,6 +229,11 @@ nav > .container > .brand-logo {
     padding: .5rem;
 }
 
+.service-form > .header .btn-group {
+    display: flex;
+    gap: .5rem;
+}
+
 .service-form > .header .action-delete {
     background-color: rgb(190, 10, 10);
 }

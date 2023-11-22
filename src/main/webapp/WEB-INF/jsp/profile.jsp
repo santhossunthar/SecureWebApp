@@ -62,13 +62,9 @@
 
                 <div class="content">
                     <div class="element title">Full Name:</div>
-                    <div class="element"><%= userInfo.get("fullName") %></div>
+                    <div class="element"><%= userInfo.get("fullName").toString() %></div>
                     <div class="element title">Name:</div>
-                    <div class="element"><%= userInfo.get("name") %></div>
-                    <div class="element title">Country:</div>
-                    <div class="element"></div>
-                    <div class="element title">Contact No:</div>
-                    <div class="element"></div>
+                    <div class="element"><%= userInfo.get("name").toString() %></div>
                 </div>
             </div>
         </div>

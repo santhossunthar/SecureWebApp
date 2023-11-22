@@ -49,7 +49,7 @@ public class ReservationViewServlet extends HttpServlet {
 
                         if (reservationDetails != null) {
                             if (!reservationDetails.isEmpty()) {
-                                req.setAttribute("reservationsDetails", reservationDetails);
+                                req.setAttribute("reservationDetails", reservationDetails);
                                 req.setAttribute("csrfToken", csrfToken);
                                 req.getRequestDispatcher(Pages.reservationView)
                                         .forward(req, res);

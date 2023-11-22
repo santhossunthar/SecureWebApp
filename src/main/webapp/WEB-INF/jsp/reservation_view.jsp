@@ -1,6 +1,5 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ page import="java.util.HashMap" %>
-<%@ page import="java.util.List" %>
 <!DOCTYPE html>
 
 <head>
@@ -38,8 +37,7 @@
         <div class="container">
             <div class="service-form">
                 <%
-                   List<HashMap<String, Object>> productList = (List<HashMap<String, Object>>) request.getAttribute("reservationsDetails");
-                   for (HashMap<String, Object> product : productList) {
+                   HashMap<String, Object> reservation = (HashMap<String, Object>) request.getAttribute("reservationDetails");
                 %>
                 <div class="header">
                     <h2>Reservation Details</h2>
@@ -47,8 +45,8 @@
                     <div class="btn-group">
                         <a href="/reservation/add"><button class="btn">Reserve</button></a>
 
-                        <form action="/reservation/delete" method="POST">
-                             <input type="hidden" name="bid" value="<%= (int) product.get("bookingId") %>"/>
+                        <form action="/reservation/delete" method="POST" class="reservation-actions">
+                             <input type="hidden" name="bid" value="<%= (int) reservation.get("bookingId") %>"/>
                              <input type="hidden" name="token" value="<%= (String) request.getAttribute("csrfToken") %>"/>
                              <button class="btn action-delete" type="submit">Delete</button>
                         </form>
@@ -56,21 +54,20 @@
                 </div>
                 <div class="reservation-info">
                     <h4 class="element title">Booking Id</h4>
-                    <h4 class="element"><%= product.get("bookingId") %></h4>
+                    <h4 class="element"><%= reservation.get("bookingId").toString() %></h4>
                     <h4 class="element">Date</h4>
-                    <h4 class="element"><%= product.get("date") %></h4>
+                    <h4 class="element"><%= reservation.get("date").toString().replace("-", "/") %></h4>
                     <h4 class="element">Time</h4>
-                    <h4 class="element"><%= product.get("time") %></h4>
+                    <h4 class="element"><%= reservation.get("time").toString() %></h4>
                     <h4 class="element">Location</h4>
-                    <h4 class="element"><%= product.get("location") %></h4>
-                    <h4 class="element">Vechile No</h4>
-                    <h4 class="element"><%= product.get("vehicleNo") %></h4>
+                    <h4 class="element"><%= reservation.get("location").toString() %></h4>
+                    <h4 class="element">Vehicle No</h4>
+                    <h4 class="element"><%= reservation.get("vehicleNo").toString() %></h4>
                     <h4 class="element">Mileage</h4>
-                    <h4 class="element"><%= product.get("mileage") %></h4>
+                    <h4 class="element"><%= reservation.get("mileage").toString() %></h4>
                     <h4 class="element">Message</h4>
-                    <h4 class="element"><%= product.get("message") %></h4>
+                    <h4 class="element"><%= reservation.get("message").toString() %></h4>
                 </div>
-                <% } %>
             </div>
         </div>
     </section>
@@ -80,8 +77,6 @@
             2023 Copyright
         </div>
     </footer>
-
-    <script src="/assets/js/main.js"></script>
 </body>
 
 </html>
