@@ -22,8 +22,8 @@ public class CSPFilter implements Filter {
             String POLICY = "default-src 'self';" +
                     "script-src 'self' 'unsafe-inline';" +
                     "style-src 'self' 'unsafe-inline';" +
-                    "img-src 'self' https://s.gravatar.com/avatar/ https://cdn.auth0.com/avatars/ " +
-                        "https://i1.wp.com/cdn.auth0.com/avatars/ https://lh3.googleusercontent.com/;" +
+                    "img-src 'self' https://*.gravatar.com/ https://*.auth0.com/ " +
+                        "https://*.wp.com/ https://*.googleusercontent.com/;" +
                     "font-src 'self';" +
                     "object-src 'none';" +
                     "frame-ancestors 'none';" +

@@ -37,7 +37,7 @@
             <div class="service-form">
                 <form method="post" action="/reservation/add">
                     <label for="date">Date</label>
-                    <input type="date" name="date" min="2023-11-17"/>
+                    <input type="date" name="date" id="date-picker"/>
                     <label for="time">Preferred time</label>
                     <select name="time" id="time">
                         <option value="10">10 AM</option>
@@ -91,6 +91,8 @@
             2023 Copyright
         </div>
     </footer>
+
+    <script src="/assets/js/main.js"></script>
 
 </body>
 
