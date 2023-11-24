@@ -16,14 +16,12 @@ public class AuthFilter implements Filter {
         HttpServletResponse response = (HttpServletResponse) resp;
         String path = request.getServletPath();
 
-        // check if we have a current user in the session
         if (isAuthenticated(request)) {
             chain.doFilter(request, response);
             return;
         }
 
-        // no authenticated user found in session
-        response.sendRedirect("/index.jsp");
+        response.sendRedirect("/");
     }
 
     public void destroy() {}

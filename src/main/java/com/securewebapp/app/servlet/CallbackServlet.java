@@ -14,7 +14,6 @@ public class CallbackServlet extends HttpServlet {
     private String redirectOnSuccess;
     private String redirectOnFail;
     private AuthenticationController authenticationController;
-    private AuthConfig authConfig;
 
     @Override
     public void init() throws ServletException {
@@ -42,14 +41,9 @@ public class CallbackServlet extends HttpServlet {
             SessionUtils.set(req, "accessToken", tokens.getAccessToken());
             SessionUtils.set(req, "idToken", tokens.getIdToken());
 
-            HttpSession session = req.getSession(true);
-            session.setAttribute("userId", session.getId());
-
-            Cookie accessTokenCookie = new Cookie("token", tokens.getIdToken());
-            accessTokenCookie.setPath("/");
-            accessTokenCookie.setHttpOnly(true);
-            accessTokenCookie.setMaxAge(3600);
-            res.addCookie(accessTokenCookie);
+            JwtCredential jwtCredential = new JwtCredential(tokens.getIdToken());
+            JwtPrincipal jwtPrincipal = jwtCredential.getAuth0JwtPrincipal();
+            SessionUtils.set(req, "userId", jwtPrincipal.getName());
 
             res.sendRedirect(redirectOnSuccess);
         } catch (IdentityVerificationException e) {

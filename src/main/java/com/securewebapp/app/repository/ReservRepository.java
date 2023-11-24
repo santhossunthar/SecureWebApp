@@ -82,10 +82,11 @@ public class ReservRepository implements IReservRepository {
             Connection conn =  MySqlConn.connect();
 
             if(conn != null){
-                String sql = "DELETE FROM vehicle_service WHERE username=?";
+                String sql = "DELETE FROM vehicle_service WHERE username=? AND booking_id=?";
                 PreparedStatement preparedStatement = conn.prepareStatement(sql);
-                preparedStatement.setString(1, bookingId);
-                preparedStatement.executeQuery();
+                preparedStatement.setString(1, "testnew@test.com");
+                preparedStatement.setString(2, bookingId);
+                preparedStatement.executeUpdate();
                 return true;
             }
         } catch (SQLException ex){

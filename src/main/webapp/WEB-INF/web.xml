@@ -51,6 +51,10 @@
     <servlet-name>ProfileServlet</servlet-name>
     <servlet-class>com.securewebapp.app.servlet.ProfileServlet</servlet-class>
   </servlet>
+  <servlet>
+    <servlet-name>ReservationDeleteServlet</servlet-name>
+    <servlet-class>com.securewebapp.app.servlet.ReservationDeleteServlet</servlet-class>
+  </servlet>
 
   <servlet-mapping>
     <servlet-name>LoginServlet</servlet-name>
@@ -75,5 +79,9 @@
   <servlet-mapping>
     <servlet-name>ProfileServlet</servlet-name>
     <url-pattern>/profile</url-pattern>
+  </servlet-mapping>
+  <servlet-mapping>
+    <servlet-name>ReservationDeleteServlet</servlet-name>
+    <url-pattern>/dashboard/delete</url-pattern>
   </servlet-mapping>
 </web-app>
