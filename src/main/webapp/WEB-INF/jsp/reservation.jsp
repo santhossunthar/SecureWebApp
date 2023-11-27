@@ -1,4 +1,8 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@ page import="java.util.HashMap" %>
+<%@ page import="java.util.List" %>
+<%@ page import="java.sql.*" %>
+<%@ page import="java.time.LocalTime" %>
 <!DOCTYPE html>
 
 <head>
@@ -6,20 +10,20 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="/assets/css/style.css">
-    <title>Reservation</title>
+    <title>Dashboard</title>
 </head>
 
 <body>
     <nav>
         <div class="container">
             <div class="brand-logo">
-                VRS
+                VSR
             </div>
 
             <div class="nav-items">
                 <ul class="nav-items-list">
-                    <a href="/dashboard">
-                        <li class="list-item">Dashboard</li>
+                    <a href="/reservation">
+                        <li class="list-item">Reservation</li>
                     </a>
                     <a href="/profile">
                         <li class="list-item">Profile</li>
@@ -32,34 +36,52 @@
         </div>
     </nav>
 
-    <section id="user-reservation">
+    <section id="user-dashboard">
         <div class="container">
-            <div class="service-form">
-                <form method="post" action="/reservation">
-                    <label for="date">Date</label>
-                    <input type="date" name="date"/>
-                    <label for="time">Preferred time</label>
-                    <select name="time" id="time">
-                        <option value="10">10 AM</option>
-                        <option value="11">11 AM</option>
-                        <option value="12">12 PM</option>
-                    </select>
-                    <label for="location">Preferred Location</label>
-                    <input type="text" name="location"/>
-                    <label for="vehicleno">Vehicle Registration Number</label>
-                    <input type="text" name="vehicleno"/>
-                    <label for="mileage">Current Mileage</label>
-                    <input type="text" name="mileage"/>
-                    <label for="message">Message</label>
-                    <input type="text" name="message"/>
-                    <button type="submit">Reserve</button>
-                    <button type="reset">Clear</button>
-                </form>
-                <% String message = (String) request.getAttribute("response");
-                System.out.println(message);
-                if(message != null){ %>
-                    <p><%= message %></p>
-                <% } %>
+            <div class="reservations">
+                <div class="header">
+                    <h1>Reservations</h1>
+                    <a href="/reservation/add"><button class="btn">ADD</button></a>
+                </div>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Booking ID</th>
+                            <th>Date</th>
+                            <th>Time</th>
+                            <th>Location</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                       <%
+                         List<HashMap<String, Object>> reservationsList = (List<HashMap<String, Object>>) request.getAttribute("reservationsDetails");
+                         for (HashMap<String, Object> reservation : reservationsList) {
+                       %>
+                       <tr>
+                           <td><%= reservation.get("bookingId").toString() %></td>
+                           <td><%= reservation.get("date").toString().replace("-", "/") %></td>
+                           <td><%= reservation.get("time").toString() %></td>
+                           <td><%= reservation.get("location").toString() %></td>
+                           <td class="actions">
+                               <form action="/reservation/view" method="POST">
+                                  <input type="hidden" name="bid" value="<%= (int) reservation.get("bookingId") %>"/>
+                                  <input type="hidden" name="token" value="<%= (String) request.getAttribute("csrfToken") %>"/>
+                                  <button class="btn action-view" type="submit">View</button>
+                               </form>
+
+                               <form action="/reservation/delete" method="POST">
+                                 <input type="hidden" name="bid" value="<%= (int) reservation.get("bookingId") %>"/>
+                                 <input type="hidden" name="token" value="<%= (String) request.getAttribute("csrfToken") %>"/>
+                                 <button class="btn action-delete" type="submit">Delete</button>
+                               </form>
+                            </td>
+                        </tr>
+                       <%
+                         }
+                       %>
+                    </tbody>
+                </table>
             </div>
         </div>
     </section>
@@ -70,7 +92,6 @@
         </div>
     </footer>
 
-    <script src="/assets/js/main.js"></script>
 </body>
 
 </html>

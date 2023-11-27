@@ -1,133 +1,63 @@
 package com.securewebapp.app.servlet;
 
-import com.securewebapp.app.auth.JwtCredential;
-import com.securewebapp.app.auth.JwtPrincipal;
-import com.securewebapp.app.repository.ReservRepository;
-import com.securewebapp.app.helper.InputValidator;
+import com.securewebapp.app.api.Endpoint;
+import com.securewebapp.app.api.Pages;
+import com.securewebapp.app.repository.ReservationRepository;
 
 import javax.servlet.ServletException;
-import javax.servlet.http.Cookie;
-import javax.servlet.http.HttpServlet;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.*;
 import java.io.IOException;
 import java.util.HashMap;
+import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 public class ReservationServlet extends HttpServlet {
-    @Override
-    protected void doGet(HttpServletRequest req, HttpServletResponse resp)
-            throws ServletException, IOException {
-        String user = (String) req.getSession(true)
-                .getAttribute("userId");
-        req.setAttribute("user", user);
-
-        Cookie[] cookies = req.getCookies();
-        for(Cookie cookie: cookies){
-            System.out.println(cookie.getName());
-        }
-
-        String response = req.getParameter("msg");
-
-        if(response == null){
-            response = "";
-        }
-
-        String[] matches = new String[2];
-        matches[0] = "success";
-        matches[1] = "failed";
-
-        String matchedData = "";
-        for (String match: matches) {
-            if(response == match){
-                matchedData = match;
-            }
-        }
-
-        String data = null;
-        if(InputValidator.isAlphanumeric(matchedData)){
-            data = InputValidator.sanitizeHtml(matchedData);
-        }
-        req.setAttribute("response", data);
-        req.getRequestDispatcher("/WEB-INF/jsp/reservation.jsp")
-                .forward(req, resp);
-    }
+    private static final Logger logger = Logger.getLogger(ReservationServlet.class.getName());
 
     @Override
-    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        try{
-            String reservationDate = req.getParameter("date");
-            String reservationTime = req.getParameter("time");
-            String reservationLocation = req.getParameter("location");
-            String reservationVehicleNo = req.getParameter("vehicleno");
-            String reservationMileage = req.getParameter("mileage");
-            String reservationMessage = req.getParameter("message");
+    protected void doGet(HttpServletRequest req, HttpServletResponse res)
+            throws IOException {
+        try {
+            List<HashMap<String, Object>> reservationsDetails;
+            String userSessionId = req.getRequestedSessionId();
 
-            if(reservationDate == null
-                    || reservationTime == null
-                    || reservationLocation == null
-                    || reservationVehicleNo == null
-                    || reservationMileage == null
-                    || reservationMessage == null
-            ) {
-                req.setAttribute("msg", "failed");
-                req.getRequestDispatcher("/WEB-INF/jsp/reservation_post_action.jsp")
-                        .forward(req, resp);
-                return;
-            }
+            if(userSessionId != null){
+                HttpSession session = req.getSession(false);
 
-            HashMap<String, String> postValidatedData = new HashMap<>();
-            if (InputValidator.isValidDate(reservationDate)
-                    && InputValidator.isNumeric(reservationTime)
-                    && InputValidator.isAlphanumeric(reservationLocation)
-                    && InputValidator.isAlphanumeric(reservationVehicleNo)
-                    && InputValidator.isNumeric(reservationMileage)
-                    && InputValidator.isAlphanumeric(reservationMessage)
-            ) {
-                postValidatedData.put("reservationDate", reservationDate);
-                postValidatedData.put("reservationTime", reservationTime);
-                postValidatedData.put("reservationLocation", reservationLocation);
-                postValidatedData.put("reservationVehicleNo", reservationVehicleNo);
-                postValidatedData.put("reservationMileage", reservationMileage);
-                postValidatedData.put("reservationMessage", reservationMessage);
+                if (session != null && session.getId().equals(userSessionId)) {
+                    String userId = (String) session.getAttribute("userId");
+                    String csrfToken = (String) session.getAttribute("csrfToken");
 
-                String idToken;
-                Cookie[] cookies = req.getCookies();
-                if (cookies != null) {
-                    for (Cookie cookie : cookies) {
-                        if ("token".equals(cookie.getName())) {
-                            System.out.println(cookie.getName());
-                            idToken = cookie.getValue();
-                            JwtCredential jwtCredential = new JwtCredential(idToken);
-                            JwtPrincipal jwtPrincipal = jwtCredential.getAuth0JwtPrincipal();
-                            postValidatedData.put("userName", jwtPrincipal.getName());
-                            break;
+                    ReservationRepository reservationRepository = new ReservationRepository();
+                    reservationsDetails = reservationRepository
+                            .getReservationsDetails(userId);
+
+                    if(reservationsDetails != null){
+                        if (!reservationsDetails.isEmpty()){
+                            req.setAttribute("csrfToken", csrfToken);
+                            req.setAttribute("reservationsDetails", reservationsDetails);
+                            req.getRequestDispatcher(Pages.reservation)
+                                    .forward(req, res);
+                        } else {
+                            req.setAttribute("msg", "empty");
+                            req.getRequestDispatcher(Pages.reservationAction)
+                                    .forward(req, res);
                         }
+                    } else {
+                        req.setAttribute("msg", "error");
+                        req.getRequestDispatcher(Pages.reservationAction)
+                                .forward(req, res);
                     }
                 } else {
-                    req.setAttribute("msg", "failed");
-                    req.getRequestDispatcher("/WEB-INF/jsp/reservation_post_action.jsp")
-                            .forward(req, resp);
-                    return;
+                    res.sendRedirect(Endpoint.login);
                 }
             } else {
-                req.setAttribute("msg", "failed");
-                req.getRequestDispatcher("/WEB-INF/jsp/reservation_post_action.jsp")
-                        .forward(req, resp);
-                return;
+                res.sendRedirect(Endpoint.login);
             }
-
-            ReservRepository reservRepository = new ReservRepository();
-            if(reservRepository.addReservationDetails(postValidatedData)){
-                req.setAttribute("msg", "success");
-                req.getRequestDispatcher("/WEB-INF/jsp/reservation_post_action.jsp")
-                        .forward(req, resp);
-            } else {
-                req.setAttribute("msg", "failed");
-                req.getRequestDispatcher("/WEB-INF/jsp/reservation_post_action.jsp")
-                        .forward(req, resp);
-            }
-        }catch (Exception ex){
-            throw new ServletException();
+        } catch (ServletException | IOException | NullPointerException ex) {
+            logger.log(Level.SEVERE, "An error occurred: " + ex.getMessage(), ex);
+            res.sendRedirect(Endpoint.root);
         }
     }
 }

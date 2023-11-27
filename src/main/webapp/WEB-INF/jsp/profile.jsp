@@ -1,4 +1,5 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@ page import="java.util.HashMap" %>
 <!DOCTYPE html>
 
 <head>
@@ -18,8 +19,8 @@
 
             <div class="nav-items">
                 <ul class="nav-items-list">
-                    <a href="/dashboard">
-                        <li class="list-item">Dashboard</li>
+                    <a href="/reservation">
+                        <li class="list-item">Reservation</li>
                     </a>
                     <a href="/profile">
                         <li class="list-item">Profile</li>
@@ -36,17 +37,34 @@
         <div class="container">
             <div class="profile-info">
                 <div class="header">
+                    <%
+                       HashMap<String, Object> userInfo = (HashMap<String, Object>) request.getAttribute("userInfo");
+                    %>
                     <div class="img">
+                        <% if(userInfo.get("picture") != null) { %>
+                        <img src="<%= userInfo.get("picture") %>" alt="image" width="200px" height="150px">
+                        <% } else { %>
                         <img src="/assets/images/user.png" alt="image" width="200px" height="150px">
+                        <% } %>
                     </div>
 
-                    <div class="info">
-                        <h2>email@email.com</h2>
-                        <h3>Username</h3>
-                        <h3>name</h3>
-                        <h3>Contact number</h3>
-                        <h3>Country</h3>
-                    </div>
+                     <div class="email-info">
+                         <h2><%= userInfo.get("email") %></h2>
+                         <h4>
+                            <% if((boolean) userInfo.get("emailVerification")) { %>
+                            <h4>Email is verified!</h4>
+                            <% } else { %>
+                            <h4>Email is not verified!</h4>
+                            <% } %>
+                         </h4>
+                     </div>
+                </div>
+
+                <div class="content">
+                    <div class="element title">Full Name:</div>
+                    <div class="element"><%= userInfo.get("fullName").toString() %></div>
+                    <div class="element title">Name:</div>
+                    <div class="element"><%= userInfo.get("name").toString() %></div>
                 </div>
             </div>
         </div>
